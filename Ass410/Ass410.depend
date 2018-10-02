@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1537122285 source:c:\users\dumba\onedrive\documents\assignments\ass410\main.cpp
+	<iostream>
+	<stdio.h>
+	<string.h>
+

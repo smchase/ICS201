@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1536781164 source:h:\documents\assignments\ass35\main.cpp
+	<iostream>
+	<cmath>
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+

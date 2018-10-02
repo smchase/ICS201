@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1536954563 source:h:\documents\assignments\ass45\main.cpp
+	<iostream>
+	<stdio.h>
+	<vector>
+

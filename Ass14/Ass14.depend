@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1536349096 source:h:\documents\assignments\ass14\main.cpp
+	<iostream>
+	<iomanip>
+	<stdio.h>
+

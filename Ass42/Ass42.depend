@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1536951986 source:h:\documents\assignments\ass42\main.cpp
+	<iostream>
+	<stdio.h>
+

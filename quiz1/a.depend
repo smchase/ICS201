@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1538507433 source:h:\documents\assignments\a\main.cpp
+	<iostream>
+	<stdio.h>
+
+1538507433 source:h:\documents\assignments\quiz1\main.cpp
+	<iostream>
+	<stdio.h>
+
