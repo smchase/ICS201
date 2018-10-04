@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1538682987 source:h:\documents\assignments\ass55\main.cpp
+	<iostream>
+	<string>
+	<stdlib.h>
+	<stdio.h>
+	<time.h>
+	<windows.h>
+	<math.h>
+
