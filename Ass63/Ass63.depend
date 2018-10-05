@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1538769152 source:h:\documents\assignments\ass63\main.cpp
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<time.h>
+	<string>
+
