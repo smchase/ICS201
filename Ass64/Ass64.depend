@@ -1,0 +1,10 @@
+# depslib dependency file v1.0
+1538851458 source:c:\users\dumba\onedrive\documents\github\assignments\ass64\main.cpp
+	<iostream>
+	<stdlib.h>
+	<stdio.h>
+	<time.h>
+	<string>
+	<algorithm>
+	<vector>
+

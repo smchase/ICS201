@@ -4,6 +4,7 @@
 #include <time.h>
 #include <string>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -15,12 +16,16 @@ int main()
     printf("How many numbers to generate? ");
     cin >> n;
 
-    int arr[n];
+    if (n > 20)
+        n = 20;
+
+    vector<int> arr;
     for (int i = 0; i < n; i ++) {
         int r = rand() % 40 + 1;
-        while (arr.count(arr.begin(), arr.end(), r) != 0) {
-            r = rand() % 40 + 1
+        while (count(arr.begin(), arr.end(), r) != 0) {
+            r = rand() % 40 + 1;
         }
-        arr[i] = r;
+        arr.push_back(r);
+        printf("%i\n", r);
     }
 }
