@@ -18,7 +18,7 @@ int main()
     srand (time(NULL));
     vector<int> temps;
     for (int i = 0; i < 30; i++)
-        temps.push_back(5 + rand() % 20);
+        temps.push_back(5 + rand() % 21);
 
     vector<int> sorted = temps;
     sort(sorted.begin(), sorted.end(), compLen);
