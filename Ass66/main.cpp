@@ -1,4 +1,36 @@
 #include <iostream>
+using namespace std;
+
+int main()
+{
+    int age[] = {23,16,18,12,35,42};
+    string name[] = {"Dave","Mary","Cathy","Peter","John","Kim"};
+    int holdAge=0;
+    string holdName="";
+
+    for(int intC=0;intC<6;intC++){
+        for(int intCtr=0;intCtr<5;intCtr++){
+             if(age[intCtr]>age[intCtr+1]){ //Ascending 1-10, A-Z
+                holdAge=age[intCtr];
+                age[intCtr]=age[intCtr+1];
+                age[intCtr+1]=holdAge;
+
+                holdName=name[intCtr];
+                name[intCtr]=name[intCtr+1];
+                name[intCtr+1]=holdName;
+             }
+        }
+    }
+
+    cout<<"List(Sorted)- According to Age"<<endl;
+    for(int intC=0; intC<6;intC++){
+        cout<<name[intC]<<"\t"<<age[intC]<<endl;
+    }
+return 0;
+}
+
+
+#include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -10,10 +42,13 @@
 
 using namespace std;
 
-bool compLen(int i, int j)
+struct data
 {
-    return i > j;
-}
+    string names[6];
+    float prices[6];
+    int sold[6];
+    float total[6];
+} ;
 
 int main()
 {
