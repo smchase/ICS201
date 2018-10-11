@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1539284786 source:h:\documents\assignments\quiz3q2\main.cpp
+	<iostream>
+	<stdio.h>
+	<time.h>
+	<stdlib.h>
+

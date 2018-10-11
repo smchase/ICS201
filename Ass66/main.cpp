@@ -5,15 +5,22 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <cstring>
+#include <algorithm>
 
 using namespace std;
+
+bool compLen(int i, int j)
+{
+    return i > j;
+}
 
 int main()
 {
     srand (time(NULL));
     string names[6] = {"Tulips", "Orchids", "Mixed Stems", "Baby Roses", "Cactus Plants", "Red Roses"};
     float prices[6] = {15.50, 27.00, 3.95, 18.50, 7.65, 19.00};
-    float sold[6] = {12, 7, 35, 15, 18, 21};
+    int sold[6] = {12, 7, 35, 15, 18, 21};
     float total[6];
 
     for (int i = 0; i < 6; i ++)
@@ -22,8 +29,27 @@ int main()
     string headers[4] = {"Name", "Unit Price", "Quantity Sold", "Total Sales"};
     for (int i = 0; i < 4; i ++) {
         printf("%-*s", 15, headers[i].c_str());
-        for (int n = 0; n < 6; n ++) {
+    }
 
+
+
+    for (int n = 0; n < 6; n ++) {
+        printf("\n");
+        for (int i = 0; i < 4; i ++) {
+            switch (i) {
+                case 0:
+                    printf("%-*s", 15, names[n].c_str());
+                    break;
+                case 1:
+                    printf("$%-*.2f", 14, prices[n]);
+                    break;
+                case 2:
+                    printf("%-*i", 15, sold[n]);
+                    break;
+                case 3:
+                    printf("$%.2f", total[n]);
+                    break;
+            }
         }
     }
 }
