@@ -1,10 +1,6 @@
 # depslib dependency file v1.0
-1539286447 source:h:\documents\assignments\ass66\main.cpp
+1539374439 source:h:\documents\assignments\ass66\main.cpp
 	<iostream>
-	<stdlib.h>
 	<stdio.h>
-	<time.h>
 	<string>
-	<algorithm>
-	<vector>
 
