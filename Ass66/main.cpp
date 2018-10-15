@@ -25,7 +25,7 @@ int main()
                 for (int i = 0; i < 4; i ++)
                     printf("%-*s", 15, headers[i].c_str());
 
-                for (int i = 0; i < 5; i ++) {
+                for (int j = 0; j < 5; j ++) {
                     for (int i = 0; i < 5; i ++) {
                         if (total[i] < total[i + 1]) {
                             holdName = names[i];
@@ -71,7 +71,7 @@ int main()
                 for (int i = 0; i < 4; i ++)
                     printf("%-*s", 15, headers[i].c_str());
 
-                for (int i = 0; i < 5; i ++) {
+                for (int j = 0; j < 5; j ++) {
                     for (int i = 0; i < 5; i ++) {
                         if (names[i] > names[i + 1]) {
                             holdName = names[i];
