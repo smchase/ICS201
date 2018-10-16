@@ -8,7 +8,7 @@ using namespace std;
 
 int main()
 {
-    string holdName, holdAdd, holdCity, holdState, headers[4] = {"Name", "Address", "City", "State"}, a[8] = {"Bantam Books", "ETN Corporation", "Benjamin/Cummings", "Intertext", "Addison Wesley", "Brady Pub", "Gale", "ACM"}, b[8] = {"666 Fifth Ave", "Rd 4, Box 659", "390 Bridge Pkwy", "2633 E.17th Ave", "Rte 128", "15 Columbus Cir", "835 Penobscot", "11W. 42nd St."}, c[8] = {"New York", "Detroit", "Redwood", "New York", "Reading", "New York", "Redwood", "New York"}, d[8] = {"NY", "MI", "CA", "NY", "MA", "NY", "CA", "NY"};
+    string info, holdName, holdAdd, holdCity, holdState, headers[4] = {"Name", "Address", "City", "State"}, a[8] = {"Bantam Books", "ETN Corporation", "Benjamin/Cummings", "Intertext", "Addison Wesley", "Brady Pub", "Gale", "ACM"}, b[8] = {"666 Fifth Ave", "Rd 4, Box 659", "390 Bridge Pkwy", "2633 E.17th Ave", "Rte 128", "15 Columbus Cir", "835 Penobscot", "11W. 42nd St."}, c[8] = {"New York", "Detroit", "Redwood", "New York", "Reading", "New York", "Redwood", "New York"}, d[8] = {"NY", "MI", "CA", "NY", "MA", "NY", "CA", "NY"};
 
     vector<string> names(&a[0], &a[0]+8), addresses(&b[0], &b[0]+8), cities(&c[0], &c[0]+8), states(&d[0], &d[0]+8);
 
@@ -20,26 +20,111 @@ int main()
     while (input != 'e') {
         switch (input) {
         case 'a':
+            printf("> ");
             for (int i = 0; i < 4; i ++)
-                printf("%-*s", 15, headers[i].c_str());
+                printf("%-*s", 20, headers[i].c_str());
+
+            for (int n = 0; n < names.size(); n ++) {
+                printf("\n> ");
+
+                for (int i = 0; i < 4; i ++) {
+                    switch (i) {
+                    case 0:
+                        printf("%-*s", 20, names[n].c_str());
+                        break;
+
+                    case 1:
+                        printf("%-*s", 20, addresses[n].c_str());
+                        break;
+
+                    case 2:
+                        printf("%-*s", 20, cities[n].c_str());
+                        break;
+
+                    case 3:
+                        printf("%s", states[n].c_str());
+                        break;
+                    }
+                }
+            }
             break;
 
         case 'b':
+            printf("> ");
+            for (int i = 0; i < 4; i ++)
+                printf("%-*s", 20, headers[i].c_str());
 
+            for (int n = 0; n < names.size(); n ++) {
+                if (cities[n] == "New York") {
+                    printf("\n> ");
+
+                    for (int i = 0; i < 4; i ++) {
+                        switch (i) {
+                        case 0:
+                            printf("%-*s", 20, names[n].c_str());
+                            break;
+
+                        case 1:
+                            printf("%-*s", 20, addresses[n].c_str());
+                            break;
+
+                        case 2:
+                            printf("%-*s", 20, cities[n].c_str());
+                            break;
+
+                        case 3:
+                            printf("%s", states[n].c_str());
+                            break;
+                        }
+                    }
+                }
+            }
             break;
 
         case 'c':
+            printf("> Name: \n> ");
+            cin.ignore(256, '\n');
+            getline(cin, info);
+            names.push_back(info);
 
+            printf("\n> Address: \n> ");
+            getline(cin, info);
+            addresses.push_back(info);
+
+            printf("\n> City: \n> ");
+            getline(cin, info);
+            cities.push_back(info);
+
+            printf("\n> State: \n> ");
+            getline(cin, info);
+            states.push_back(info);
+
+            printf("\nData added!");
             break;
 
         case 'd':
             for (int i = 0; i < names.size() - 1; i ++) {
                 for (int j = 0; j < names.size() - 1; j ++) {
                     if (names[j] > names[j + 1]) {
+                        holdName = names[j];
+                        holdAdd = addresses[j];
+                        holdCity = cities[j];
+                        holdState = states[j];
 
+                        names[j] = names[j + 1];
+                        addresses[j] = addresses[j + 1];
+                        cities[j] = cities[j + 1];
+                        states[j] = states[j + 1];
+
+                        names[j + 1] = holdName;
+                        addresses[j + 1] = holdAdd;
+                        cities[j + 1] = holdCity;
+                        states[j + 1] = holdState;
                     }
                 }
             }
+
+            printf("> Data has been sorted!");
             break;
         }
 
