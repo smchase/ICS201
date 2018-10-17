@@ -8,11 +8,40 @@ using namespace std;
 
 int main()
 {
-    string sIn, a[13] = {"Ageloff", "Anderson", "Biegel", "Biow", "Bisland", "Arnott", "Arnston", "Ault", "Avison", "Bard", "Bowman", "Adams", "Adrian"};
+    string strIn, a[13] = {"Ageloff", "Anderson", "Biegel", "Biow", "Bisland", "Arnott", "Arnston", "Ault", "Avison", "Bard", "Bowman", "Adams", "Adrian"};
     vector<string> n(&a[0], &a[0]+13);
-    char cIn;
+    char chIn;
 
-    printf("To select an item from the menu enter its corrosponding letter\na: Display all the names\nb: Display names which begin with the letter A\nc: Display names which begin with the letter B\nd: Search for a specific name (Displays names which match the one entered by the user)\ne: Partial search (Displays names which contain letters entered by the user)\nf: Sort the names in descending order\ng: Exit");
+    printf("To select an item from the menu enter its corrosponding letter\na: Display all the names\nb: Display names which begin with the letter A\nc: Display names which begin with the letter B\nd: Search for a specific name (Displays names which match the one entered by the user)\ne: Partial search (Displays names which contain letters entered by the user)\nf: Sort the names in descending order\ng: Exit\n\n");
+    cin >> chIn;
+
+    while (chIn != 'g') {
+        switch (chIn) {
+        case 'a':
+
+            break;
+
+        case 'b':
+
+            break;
+
+        case 'c':
+
+            break;
+
+        case 'd':
+
+            break;
+
+        case 'e':
+
+            break;
+
+        case 'f':
+
+            break;
+        }
+    }
 }
 
 /*
