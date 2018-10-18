@@ -18,7 +18,7 @@ int main()
     while (chIn != 'g') {
         switch (chIn) {
         case 'a':
-
+            // yay
             break;
 
         case 'b':
@@ -70,6 +70,4 @@ Create a menu based program, which will perform and display the following to the
 �	Display names which begin with the letter B
 �	Search for a specific name (Displays names which match the one entered by the user)
 �	Partial search (Displays names which contain letters entered by the user)
-�	Sort the names in descending order
-�	Exit
-*/
+�	Sort the names in descending ord
