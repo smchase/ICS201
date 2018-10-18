@@ -12,7 +12,7 @@ int main()
     vector<string> n(&a[0], &a[0]+13);
     char chIn;
 
-    printf("To select an item from the menu enter its corrosponding letter\na: Display all the names\nb: Display names which begin with the letter A\nc: Display names which begin with the letter B\nd: Search for a specific name (Displays names which match the one entered by the user)\ne: Partial search (Displays names which contain letters entered by the user)\nf: Sort the names in descending order\ng: Exit\n\n");
+    printf("To select an item from the menu enter its corrosponding letter\na: Display all the names\nb: Display names which begin with the letter A\nc: Display names which begin with the letter B\nd: Search for a specific name (Displays names which match the one entered by the user)\ne: Partial search (Displays names which contain letters entered by the user)\nf: Sort the names in descending order\ng: Exit\n\nLetter: ");
     cin >> chIn;
 
     while (chIn != 'g') {
@@ -41,6 +41,10 @@ int main()
 
             break;
         }
+
+        printf("\n\nTo select an item from the menu enter its corrosponding letter: ");
+        cin >> chIn;
+        printf("\n");
     }
 }
 
