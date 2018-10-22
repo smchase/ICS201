@@ -7,13 +7,10 @@ TODO generate random number with no repeats
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
-
-string genNum ()
-{
-    return "1234";
-}
 
 bool goodIn (string i)
 {
@@ -32,8 +29,20 @@ int cows (string i, string n)
 
 int main()
 {
-    string input, num = "1234";
-    int attempt = 1;
+    string input, num = "----";
+    int attempt = 1, j;
+
+    srand(time(NULL));
+    for (int i = 0; i < 4; i++) {
+        do
+        i == 0 ? j = rand() % 9 + 1 : j = rand() % 10 + 1;
+        while
+        (num.find(j) != -1);
+        num = (char)j;
+    }
+
+    cout << (char)j;
+    return 1;
 
     printf("Welcome to the game of BULLS and COWS.\n\nThe objective in this game is for you to guess a 4-digit number\nThe computer responds with how close your guess is to the target\n\nBULLS = # common digits with exact matches\nCOWS  = # common digits in wrong position\n\n");
 
