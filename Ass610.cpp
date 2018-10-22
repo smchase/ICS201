@@ -2,6 +2,8 @@
 TODO check input with goodIn()
 TODO calculate bulls and cows with bulls() and cows()
 TODO generate random number with no repeats
+
+USE INTS FOR NUM & INPUT?
 */
 
 #include <iostream>
