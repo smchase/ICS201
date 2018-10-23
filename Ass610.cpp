@@ -2,38 +2,50 @@
 TODO check input with goodIn()
 TODO calculate bulls and cows with bulls() and cows()
 TODO generate random number with no repeats
+
+USE INTS FOR NUM & INPUT?
 */
 
 #include <iostream>
 #include <stdio.h>
 #include <string>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
-string genNum ()
-{
-    return "1234";
-}
-
-bool goodIn (string i)
+bool goodIn (int i)
 {
     return true;
 }
 
-int bulls (string i, string n)
+int bulls (int i, int n)
 {
     return 0;
 }
 
-int cows (string i, string n)
+int cows (int i, int n)
 {
     return 0;
 }
 
 int main()
 {
-    string input, num = "1234";
-    int attempt = 1;
+    int attempt = 1, j, input, num = 0;
+
+    srand(time(NULL));
+    for (int i = 0; i < 8; i++) {
+        i == 0 ? j = rand() % 9 + 1 : j = rand() % 10;
+        while (num % 10 == j || (num / 10) % 10 == j || (num / 100) % 10 == j) {
+            i == 0 ? j = rand() % 9 + 1 : j = rand() % 10;
+        }
+        num *= 10;
+        num += j;
+        cout << j << endl;
+    }
+
+    cout << num << endl;
+    return 1;
 
     printf("Welcome to the game of BULLS and COWS.\n\nThe objective in this game is for you to guess a 4-digit number\nThe computer responds with how close your guess is to the target\n\nBULLS = # common digits with exact matches\nCOWS  = # common digits in wrong position\n\n");
 
@@ -49,7 +61,7 @@ int main()
             printf("> Input must be a 4 digit non-repeating number\n\n");
     }
 
-    attempt == 10 ? printf("> You Lose\n> The number was %s\n", num.c_str()) : printf("> You Win!\n");
+    attempt == 10 ? printf("> You Lose\n> The number was %i\n", num) : printf("> You Win!\n");
 }
 
 /*
