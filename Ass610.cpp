@@ -1,8 +1,3 @@
-/*
-TODO check input with goodIn()
-TODO calculate bulls and cows with bulls() and cows()
-*/
-
 #include <iostream>
 #include <stdio.h>
 #include <string>
@@ -14,7 +9,6 @@ using namespace std;
 
 bool goodIn (string i)
 {
-    char arr[10] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     if (i.length() != 4)
         return false;
 
@@ -22,15 +16,8 @@ bool goodIn (string i)
         if (count(i.begin(), i.end(), i[n]) != 1)
             return false;
 
-        for (int j = 0; j <= 10; j ++) {
-            if (j == 10) {
-                return false;
-                break;
-            }
-
-            if (i[n] == arr[j])
-                break;
-        }
+        if (!(i[n] >= (n == 0 ? '1' : '0') && i[n] <= '9'))
+            return false;
     }
 
     return true;
@@ -38,12 +25,26 @@ bool goodIn (string i)
 
 int bulls (string i, string n)
 {
-    return 0;
+    int b = 0;
+
+    for (int j = 0; j < 4; j ++) {
+        if (i[j] == n[j])
+            b++;
+    }
+
+    return b;
 }
 
 int cows (string i, string n)
 {
-    return 0;
+    int c = 0;
+
+    for (int j = 0; j < 4; j ++) {
+        if (n.find(i[j]) != -1 && i[j] != n[j])
+            c++;
+    }
+
+    return c;
 }
 
 int main()
@@ -61,7 +62,7 @@ int main()
         num[i] = arr[rn];
     }
 
-    printf("Welcome to the game of BULLS and COWS.\n\nThe objective in this game is for you to guess a 4-digit number\nThe computer responds with how close your guess is to the target\n\nBULLS = # common digits with exact matches\nCOWS  = # common digits in wrong position\n\n");
+    printf("Welcome to the game of BULLS and COWS.\n\nThe objective in this game is for you to guess a 4 digit non-repeating integer (1000 to 9999) in 10 tries or less\nThe computer responds with how close your guess is to the target\n\nBULLS = # common digits with exact matches\nCOWS  = # common digits in wrong position\n\n");
 
     while (input != num && attempt <= 10)
     {
@@ -72,10 +73,10 @@ int main()
             printf("> Bulls: %i\n> Cows: %i\n\n", bulls(input, num), cows(input, num));
             attempt ++;
         } else
-            printf("> Input must be a 4 digit non-repeating number\n\n");
+            printf("> Input must be a 4 digit non-repeating integer (1000 to 9999)\n\n");
     }
 
-    attempt == 10 ? printf("> You Lose\n> The number was %i\n", num.c_str()) : printf("> You Win!\n");
+    attempt == 11 ? printf("> You Lose\n> The number was %s\n", num.c_str()) : printf("> You Win!\n");
 }
 
 /*
