@@ -6,10 +6,9 @@ using namespace std;
 
 int main ()
 {
-    ofstream f("Ass71.txt");
+    fstream f("Ass71.txt");
     string s;
     cout << "Input: ";
     getline(cin, s);
     f << s;
-    f.close();
 }
