@@ -6,7 +6,7 @@ using namespace std;
 
 int main ()
 {
-    fstream f("Ass71.txt");
+    fstream f("Ass71.txt", ios::out | ios::trunc);
     string s;
     cout << "Input: ";
     getline(cin, s);
