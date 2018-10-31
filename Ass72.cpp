@@ -13,5 +13,4 @@ int main ()
         f >> s;
         cout << s <<endl;
     }
-    f << s;
 }

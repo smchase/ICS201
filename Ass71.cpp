@@ -11,4 +11,5 @@ int main ()
     cout << "Input: ";
     getline(cin, s);
     f << s;
+    f.close();
 }

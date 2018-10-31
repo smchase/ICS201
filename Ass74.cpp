@@ -1,3 +1,4 @@
+
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
@@ -9,16 +10,13 @@ using namespace std;
 
 int main ()
 {
-    fstream f("\\\\HS2\\C588 Students$\\schase9914\\Documents\\Assignments\\Ass74.txt", ios::in);
-    int arr[10], i = 0, j;
+    ifstream f("Ass71.txt");
+    string s;
 
     printf("The numbers are: ");
     while (!f.eof()) {
-        f >> j;
-        cout << (int)j;
-        arr[0] = j;
-        printf("%c%s", arr[i], (i == 9 ? "" : ", "));
-        i ++;
+        f >> s;
+        printf("%s, ", s.c_str());
     }
 }
 
