@@ -8,7 +8,7 @@ using namespace std;
 
 int main ()
 {
-    fstream f("\\\\HS2\\C588 Students$\\schase9914\\Documents\\Assignments\\Ass73.txt", ios::in);
+    fstream f("H:\\Documents\\Assignments\\Ass73.txt", ios::in);
     string s;
     int lines = 0, chars = 0, words = 0;
 

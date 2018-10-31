@@ -1,23 +1,30 @@
-
 #include <iostream>
 #include <stdlib.h>
 #include <fstream>
 #include <vector>
-#include <algorithm>
 #include <string>
 
 using namespace std;
 
+bool isBigger (int i, int j)
+{
+    return i > j;
+}
+
 int main ()
 {
-    ifstream f("Ass71.txt");
-    string s;
+    ifstream f("H:\\Documents\\Assignments\\Ass74.txt");
+    int n, mean = 0, i = 0, Icount[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     printf("The numbers are: ");
     while (!f.eof()) {
-        f >> s;
-        printf("%s, ", s.c_str());
+        f >> n;
+        printf("%i ", n);
+        mean += n;
+        i ++;
     }
+
+    printf("\nThe mean is: %g\nThe mode is: %s\n", (float)mean/(float)i, "idk");
 }
 
 /*
