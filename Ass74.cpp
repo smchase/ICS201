@@ -2,19 +2,13 @@
 #include <stdlib.h>
 #include <fstream>
 #include <vector>
-#include <string>
 
 using namespace std;
-
-bool isBigger (int i, int j)
-{
-    return i > j;
-}
 
 int main ()
 {
     ifstream f("H:\\Documents\\Assignments\\Ass74.txt");
-    int n, mean = 0, i = 0, Icount[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int n, mean = 0, i = 0, arr[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     printf("The numbers are: ");
     while (!f.eof()) {
@@ -22,9 +16,27 @@ int main ()
         printf("%i ", n);
         mean += n;
         i ++;
+        arr[n] ++;
+    }
+    printf("\n");
+
+    vector<int> mode;
+    int freq = -1;
+    for (int j = 0; j < 10; j ++) {
+        if (arr[j] > freq) {
+            mode.clear();
+            mode.push_back(j);
+            freq = arr[j];
+        } else if (arr[j] == freq) {
+            mode.push_back(j);
+        }
     }
 
-    printf("\nThe mean is: %g\nThe mode is: %s\n", (float)mean/(float)i, "idk");
+    printf("\nThe mean is: %g\nThe mode is: ", ((float)mean / (float)i));
+    for (int j = 0; j < mode.size(); j ++) {
+        printf("%i ", mode[j]);
+    }
+    printf("\n");
 }
 
 /*
