@@ -1,13 +1,64 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
-#include <json/value.h>
+#include <string>
+#include <vector>
 
 using namespace std;
 
 int main ()
 {
+    fstream f("H:\\Documents\\Assignments\\empinfo.txt");
+    int inIn;
+    string strIn, out;
+    vector<string> row;
+    vector<vector<string>> data;
 
+    while (!f.eof()) {
+        getline(f, out);
+        if (row.size() == 5) {
+            data.push_back(row);
+            row.clear();
+        } else
+            row.push_back(out);
+    }
+
+    printf("Type the corresponding number:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\n> Number: ");
+    cin >> inIn;
+    printf("\n");
+
+    while (inIn != 6) {
+        switch (inIn) {
+            case 1:
+                for (int y = 0; y < data.size(); y ++) {
+                    for (int x = 0; x < data[y].size(); x ++) {
+                        printf("%-*s", 20, data[y][x].c_str());
+                    }
+                    printf("\n");
+                }
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+
+                break;
+
+            case 4:
+
+                break;
+
+            case 5:
+
+                break;
+        }
+
+        printf("\n> Type the corresponding number: ");
+        cin >> inIn;
+        printf("\n");
+    }
 }
 
 /*

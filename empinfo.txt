@@ -1,4 +1,29 @@
-0128,Brian Smithers,21 Queen st	905-522-1111,Hamilton
-1008,Holly Rathman,21 NorthSide	905-634-1212,Burlington
-2009,Scott Daniel,121 Ontario,905-643-1313,Grimsby
-1109,Peter Weber,221 Lock,905-547-1414,Hamilton
+Employee #
+Employee Name
+Address
+Phone
+City
+
+0128
+Brian Smithers
+21 Queen St
+905-522-1111
+Hamilton
+
+1008
+Holly Rathman
+21 North Side
+905-634-1212
+Burlington
+
+2009
+Scott Daniel
+121 Ontario
+905-643-1313
+Grimsby
+
+1109
+Peter Weber
+221 Lock
+905-547-1414
+Hamilton
