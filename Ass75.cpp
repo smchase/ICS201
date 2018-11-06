@@ -3,13 +3,14 @@
 #include <stdlib.h>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
 int main ()
 {
     fstream f("H:\\Documents\\Assignments\\empinfo.txt");
-    int inIn;
+    int inIn, count = 0;
     string strIn, out;
     vector<string> row;
     vector<vector<string>> data;
@@ -23,14 +24,16 @@ int main ()
             row.push_back(out);
     }
 
-    printf("Type the corresponding number:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\n> Number: ");
+    printf("Type the corresponding number:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\nNumber: ");
     cin >> inIn;
     printf("\n");
 
     while (inIn != 6) {
         switch (inIn) {
             case 1:
+                // display
                 for (int y = 0; y < data.size(); y ++) {
+                    printf("> ");
                     for (int x = 0; x < data[y].size(); x ++) {
                         printf("%-*s", 20, data[y][x].c_str());
                     }
@@ -39,23 +42,63 @@ int main ()
                 break;
 
             case 2:
+                // add
+                cin.ignore(256, '\n');
 
+                printf("> Enter Employee #\n>> ");
+                getline(cin, strIn);
+                row.push_back(strIn);
+
+                printf("\n> Enter Employee Name\n>> ");
+                getline(cin, strIn);
+                row.push_back(strIn);
+
+                printf("\n> Enter Address\n>> ");
+                getline(cin, strIn);
+                row.push_back(strIn);
+
+                printf("\n> Enter Phone #\n>> ");
+                getline(cin, strIn);
+                row.push_back(strIn);
+
+                printf("\n> Enter City\n>> ");
+                getline(cin, strIn);
+                row.push_back(strIn);
+
+                printf("\n> Data successfully added!\n");
+                data.push_back(row);
+                row.clear();
                 break;
 
             case 3:
+                // delete
+                cin.ignore(256, '\n');
+                printf("> Enter the Employee # of the entry you wish to delete (all entries with that employee # will be deleted)\n>> ");
+                getline(cin, strIn);
 
+                for (int i = 0; i < data.size(); i ++) {
+                    if (data[i][0] == strIn) {
+                        data.erase(data.begin()+i);
+                        count ++;
+                    }
+                }
+
+                count > 0 ? printf("\n> %i entr%s successfully deleted!\n", count, count == 1 ? "y" : "ies") : printf("\n> No entries matching that Employee # were found\n");
+                count = 0;
                 break;
 
             case 4:
+                // modify
 
                 break;
 
             case 5:
+                // save
 
                 break;
         }
 
-        printf("\n> Type the corresponding number: ");
+        printf("\nType the corresponding number: ");
         cin >> inIn;
         printf("\n");
     }
