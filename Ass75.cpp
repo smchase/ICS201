@@ -16,7 +16,7 @@ int main ()
 
     while (!f.eof()) {
         getline(f, out);
-        if (row.size() == 5) {
+        if (out == "") {
             data.push_back(row);
             row.clear();
         } else
