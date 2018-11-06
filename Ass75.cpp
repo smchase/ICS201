@@ -10,10 +10,11 @@ using namespace std;
 int main ()
 {
     fstream f("H:\\Documents\\Assignments\\empinfo.txt");
-    int inIn, count = 0;
+    int inIn;
     string strIn, out;
     vector<string> row;
     vector<vector<string>> data;
+    bool newNeeded, found;
 
     while (!f.eof()) {
         getline(f, out);
@@ -45,8 +46,19 @@ int main ()
                 // add
                 cin.ignore(256, '\n');
 
-                printf("> Enter Employee #\n>> ");
-                getline(cin, strIn);
+                do { NOT WORKING
+                    printf("> Enter Employee #\n>> ");
+                    getline(cin, strIn);
+
+                    newNeeded = false;
+                    for (int i = 0; i < data.size(); i ++) {
+                        if (data[i][0] == strIn) {
+                            printf("ERROR The employee # you enter cannot match an existing entry");
+                            newNeeded = true;
+                        }
+                    }
+                } while (newNeeded == false);
+
                 row.push_back(strIn);
 
                 printf("\n> Enter Employee Name\n>> ");
@@ -76,20 +88,21 @@ int main ()
                 printf("> Enter the Employee # of the entry you wish to delete (all entries with that employee # will be deleted)\n>> ");
                 getline(cin, strIn);
 
+                found = false;
                 for (int i = 0; i < data.size(); i ++) {
                     if (data[i][0] == strIn) {
                         data.erase(data.begin()+i);
-                        count ++;
+                        found = true;
                     }
                 }
 
-                count > 0 ? printf("\n> %i entr%s successfully deleted!\n", count, count == 1 ? "y" : "ies") : printf("\n> No entries matching that Employee # were found\n");
-                count = 0;
+                found == true ? printf("\n> Entry successfully deleted!\n") : printf("\nERROR No entry matching that Employee # found\n");
                 break;
 
             case 4:
                 // modify
-
+                cin.ignore(256, '\n');
+                printf("Enter the ");
                 break;
 
             case 5:
