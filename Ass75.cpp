@@ -9,11 +9,11 @@ using namespace std;
 
 int main ()
 {
-    // School: H:\\Documents\\Assignments\\empinfo.txt
+    // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments\\";
+    string location = "H:\\Documents\\Assignments";
 
-    fstream f(location + "empinfo.txt");
+    fstream f(location + "\\empinfo.txt");
     int inIn, found;
     string strIn, out;
     vector<string> row;
@@ -28,7 +28,6 @@ int main ()
         } else
             row.push_back(out);
     }
-    f.close();
 
     printf("Type the corresponding number:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\nNumber: ");
     cin >> inIn;
@@ -161,8 +160,7 @@ int main ()
                     out += "\n";
                 }
 
-                f.open(location + "empinfo.txt", ios::trunc);
-                f >> out;
+                f << out;
                 printf("> Data successfully saved!\n");
                 break;
         }
@@ -173,6 +171,37 @@ int main ()
     }
 }
 
+/*
+Employee #
+Employee Name
+Address
+Phone
+City
+
+0128
+Brian Smithers
+21 Queen St
+905-522-1111
+Hamilton
+
+1008
+Holly Rathman
+21 North Side
+905-634-1212
+Burlington
+
+2009
+Scott Daniel
+121 Ontario
+905-643-1313
+Grimsby
+
+1109
+Peter Weber
+221 Lock
+905-547-1414
+Hamilton
+*/
 /*
 1.	Create an employee information application which has a sequential file which contains the following information:
 (You may use notepad or code the information)
