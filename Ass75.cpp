@@ -9,12 +9,16 @@ using namespace std;
 
 int main ()
 {
-    fstream f("H:\\Documents\\Assignments\\empinfo.txt");
-    int inIn;
+    // School: H:\\Documents\\Assignments\\empinfo.txt
+    // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
+    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments\\";
+
+    fstream f(location + "empinfo.txt");
+    int inIn, found;
     string strIn, out;
     vector<string> row;
     vector<vector<string>> data;
-    bool newNeeded, found;
+    bool newNeeded;
 
     while (!f.eof()) {
         getline(f, out);
@@ -24,6 +28,7 @@ int main ()
         } else
             row.push_back(out);
     }
+    f.close();
 
     printf("Type the corresponding number:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\nNumber: ");
     cin >> inIn;
@@ -46,19 +51,19 @@ int main ()
                 // add
                 cin.ignore(256, '\n');
 
-                do { NOT WORKING
+                newNeeded = true;
+                while (newNeeded) {
                     printf("> Enter Employee #\n>> ");
                     getline(cin, strIn);
 
                     newNeeded = false;
                     for (int i = 0; i < data.size(); i ++) {
                         if (data[i][0] == strIn) {
-                            printf("ERROR The employee # you enter cannot match an existing entry");
+                            printf("\nERROR The employee # you enter cannot match an existing entry\n\n");
                             newNeeded = true;
                         }
                     }
-                } while (newNeeded == false);
-
+                }
                 row.push_back(strIn);
 
                 printf("\n> Enter Employee Name\n>> ");
@@ -88,30 +93,81 @@ int main ()
                 printf("> Enter the Employee # of the entry you wish to delete (all entries with that employee # will be deleted)\n>> ");
                 getline(cin, strIn);
 
-                found = false;
-                for (int i = 0; i < data.size(); i ++) {
-                    if (data[i][0] == strIn) {
-                        data.erase(data.begin()+i);
-                        found = true;
+                found = 0;
+                for (int y = 0; y < data.size(); y ++) {
+                    if (data[y][0] == strIn) {
+                        data.erase(data.begin()+y);
+                        found = 1;
                     }
                 }
 
-                found == true ? printf("\n> Entry successfully deleted!\n") : printf("\nERROR No entry matching that Employee # found\n");
+                found == 1 ? printf("\n> Entry successfully deleted!\n") : printf("\nERROR No entry matching that Employee # found\n");
                 break;
 
             case 4:
                 // modify
                 cin.ignore(256, '\n');
-                printf("Enter the ");
+                printf("> Enter the Employee # of the entry you wish to modify (Employee # cannot be modified)\n>> ");
+                getline(cin, strIn);
+
+                found = -1;
+                for (int y = 0; y < data.size(); y ++) {
+                    if (data[y][0] == strIn) {
+                        found = y;
+                        for (int x = 0; x < data[y].size(); x ++) {
+                            row.push_back(data[y][x]);
+                        }
+                    }
+                }
+
+                if (found == -1) {
+                    printf("\nERROR No entry matching that Employee # found\n");
+                    break;
+                }
+
+                printf("\n> Entry\n>> ");
+                for (int i = 0; i < row.size(); i ++) {
+                    printf("%s     ", row[i].c_str());
+                }
+
+                printf("\n\n> Enter Employee Name you wish to change it to (use a space [' '] to keep the same)\n>> ");
+                getline(cin, strIn);
+                if (strIn != " ") row[1] = strIn;
+
+                printf("\n> Enter Address you wish to change it to (use a space [' '] to keep the same)\n>> ");
+                getline(cin, strIn);
+                if (strIn != " ") row[2] = strIn;
+
+                printf("\n> Enter Phone # you wish to change it to (use a space [' '] to keep the same)\n>> ");
+                getline(cin, strIn);
+                if (strIn != " ") row[3] = strIn;
+
+                printf("\n> Enter City (use a space you wish to change it to [' '] to keep the same)\n>> ");
+                getline(cin, strIn);
+                if (strIn != " ") row[4] = strIn;
+
+                printf("\n> Data successfully modified!\n");
+                data[found] = row;
+                row.clear();
                 break;
 
             case 5:
                 // save
+                out = "";
+                for (int y = 0; y < data.size(); y ++) {
+                    for (int x = 0; x < data[y].size(); x ++) {
+                        out += (data[y][x] + "\n");
+                    }
+                    out += "\n";
+                }
 
+                f.open(location + "empinfo.txt", ios::trunc);
+                f >> out;
+                printf("> Data successfully saved!\n");
                 break;
         }
 
-        printf("\nType the corresponding number: ");
+        printf("\nSelect from menu: ");
         cin >> inIn;
         printf("\n");
     }
