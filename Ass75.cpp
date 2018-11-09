@@ -29,7 +29,7 @@ int main ()
             row.push_back(out);
     }
 
-    printf("Type the corresponding number:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\nNumber: ");
+    printf("Type the corresponding number to select from menu:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\nNumber: ");
     cin >> inIn;
     printf("\n");
 
@@ -157,9 +157,11 @@ int main ()
                     for (int x = 0; x < data[y].size(); x ++) {
                         out += (data[y][x] + "\n");
                     }
-                    out += "\n";
+                    if (y != data.size() - 1) out += "\n";
                 }
 
+                f.close();
+                f.open(location + "\\empinfo.txt", ios::trunc | ios::out);
                 f << out;
                 printf("> Data successfully saved!\n");
                 break;
@@ -202,6 +204,7 @@ Peter Weber
 905-547-1414
 Hamilton
 */
+
 /*
 1.	Create an employee information application which has a sequential file which contains the following information:
 (You may use notepad or code the information)
