@@ -9,7 +9,7 @@ int main()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    fstream f("C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments\\precip.txt");
+    fstream f("H:\\Documents\\Assignments\\precip.txt");
     string p[7][5], out, d, e;
     int xPos = 0, yPos = 0;
     float a = 0, b = 0, c = 0, june[4], london[6];
