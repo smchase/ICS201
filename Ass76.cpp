@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include <fstream>
 #include <string>
-#include <algorithm>
 
 using namespace std;
 
 int main()
 {
-    fstream f("H:\\Documents\\Assignments\\precip.txt");
-    string p[7][5], out;
+    // School: H:\\Documents\\Assignments
+    // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
+    fstream f("C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments\\precip.txt");
+    string p[7][5], out, d, e;
     int xPos = 0, yPos = 0;
+    float a = 0, b = 0, c = 0, june[4], london[6];
 
     while (!f.eof()) {
         getline(f, out);
@@ -23,15 +25,36 @@ int main()
         }
     }
 
-    printf("Precipitation (cm)\n");
+    printf("Avg Weekly Precipitation (cm)\n");
     for (int y = 0; y < 7; y ++) {
         for (int x = 0; x < 5; x ++) {
             printf("%-*s", 10, p[y][x].c_str());
+            if (x == 3 && y != 0) a += atof(p[y][x].c_str());
+            if (y == 4 && x != 0) b += atof(p[y][x].c_str());
+            c += atof(p[y][x].c_str());
+            if (y == 6 && x != 0) june[x - 1] = atof(p[y][x].c_str());
+            if (x == 1 && y != 0) london[y - 1] = atof(p[y][x].c_str());
         }
         printf("\n");
     }
 
-    printf("\nAverage weekly precipitation for North Bay: %g\nAverage precipitation for April: %g\nTotal precipitation for all areas for the first 6 months of the year: %g\nCity with the largest precipitation for June: %g\nMonth with the smallest precipitation in London: %g\n", (float)(atoi(p[1][3].c_str()) + atoi(p[2][3].c_str()) + atoi(p[3][3].c_str()) + atoi(p[4][3].c_str()) + atoi(p[5][3].c_str()) + atoi(p[6][3].c_str()) / 6));
+    float big = 0;
+    for (int i = 0; i < 4; i ++) {
+        if (june[i] > big) {
+            big = june[i];
+            d = (i == 0 ? "London" : (i == 1 ? "Kingston" : (i == 2 ? "North Bay" : "Dryden")));
+        }
+    }
+
+    int small = 100;
+    for (int i = 0; i < 6; i ++) {
+        if (london[i] < small) {
+            small = london[i];
+            e = (i == 0 ? "January" : (i == 1 ? "Febuary" : (i == 2 ? "March" : (i == 3 ? "April" : (i == 4 ? "May" : "June")))));
+        }
+    }
+
+    printf("\nAverage weekly precipitation for North Bay: %g\nAverage precipitation for April: %g\nTotal precipitation for all areas for the first 6 months of the year: %g\nCity with the largest precipitation for June: %s\nMonth with the smallest precipitation in London: %s\n", a / 6,  b / 4, c * 4, d.c_str(), e.c_str());
 }
 
 /*
