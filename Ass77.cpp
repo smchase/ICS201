@@ -4,6 +4,22 @@
 
 using namespace std;
 
+void showRaise (int p[6][3], int n[6][3], float r)
+{
+    float total = 0;
+    string arr[6] = {"Y 0  ", "E 1  ", "A 2  ", "R 3  ", "S 4  ", "  5+ "};
+    printf("     Rank\n     Lieutenant  Sergeant    Constable\n");
+    for (int y = 0; y < 6; y ++) {
+        printf("%s", arr[y].c_str());
+        for (int x = 0; x < 3; x ++) {
+            printf("%-*g", 12, (float)p[y][x] * r);
+            total += (float)p[y][x] * r * (float)n[y][x];
+        }
+        printf("\n");
+    }
+    printf("\nTotal Pay : $%g (+ $10)\n\n\n\n", total);
+}
+
 int main ()
 {
     // School: H:\\Documents\\Assignments
@@ -11,7 +27,7 @@ int main ()
     string location = "H:\\Documents\\Assignments";
 
     fstream f(location + "\\police.txt");
-    int pay[6][3], num[6][3], y = 0;
+    int pay[6][3], num[6][3], yPos = 0, xPos = 0;
     string out, n;
     bool isPay = true;
 
@@ -20,19 +36,33 @@ int main ()
 
         if (out == "") {
             isPay = false;
-            y = 0;
+            yPos = 0;
         } else {
             n = "";
             for (int x = 0; x < out.length(); x ++) {
                 if (out[x] != ' ') n += out[x];
-                else {
-                    isPay ? pay[y][x] = atoi(n.c_str()) : num[y][x] = atoi(n.c_str());
+                if (out[x] == ' ' || x == out.length() - 1) {
+                    isPay ? pay[yPos][xPos] = atoi(n.c_str()) : num[yPos][xPos] = atoi(n.c_str());
                     n = "";
+                    xPos ++;
                 }
             }
-            y ++;
+            xPos = 0;
+            yPos ++;
         }
     }
+
+    printf("Original Pay ($)\n\n");
+    showRaise (pay, num, 1);
+
+    printf("Pay with 1.5%% Raise ($)\n\n");
+    showRaise (pay, num, 1.015);
+
+    printf("Pay with 2.5%% Raise ($)\n\n");
+    showRaise (pay, num, 1.025);
+
+    printf("Pay with 4%% Raise ($)\n\n");
+    showRaise (pay, num, 1.04);
 }
 
 /*
