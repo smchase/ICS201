@@ -11,6 +11,6 @@ int main ()
     cout << "Content of Ass71.txt:\n";
     while (!f.eof()) {
         f >> s;
-        cout << s <<endl;
+        cout << s << endl;
     }
 }
