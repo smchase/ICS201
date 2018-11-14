@@ -6,7 +6,7 @@ using namespace std;
 
 void showRaise (int p[6][3], int n[6][3], float r)
 {
-    float total = 0;
+    float total = 0, ogTotal = 0;
     string arr[6] = {"Y 0  ", "E 1  ", "A 2  ", "R 3  ", "S 4  ", "  5+ "};
     printf("     Rank\n     Lieutenant  Sergeant    Constable\n");
     for (int y = 0; y < 6; y ++) {
@@ -14,10 +14,11 @@ void showRaise (int p[6][3], int n[6][3], float r)
         for (int x = 0; x < 3; x ++) {
             printf("%-*g", 12, (float)p[y][x] * r);
             total += (float)p[y][x] * r * (float)n[y][x];
+            ogTotal += (float)p[y][x] * (float)n[y][x];
         }
         printf("\n");
     }
-    printf("\nTotal Pay : $%g (+ $10)\n\n\n\n", total);
+    printf("\nTotal Pay : $%i (+ $%i)\n\n\n\n", (int)total, (int)(total - ogTotal));
 }
 
 int main ()
