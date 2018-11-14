@@ -18,14 +18,14 @@ void showRaise (int p[6][3], int n[6][3], float r)
         }
         printf("\n");
     }
-    printf("\nTotal Pay : $%i (+ $%i)\n\n\n\n", (int)total, (int)(total - ogTotal));
+    printf("\nTotal Pay : $%#.2f (+ $%#.2f)\n\n\n\n", total, total - ogTotal);
 }
 
 int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "H:\\Documents\\Assignments";
+    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
 
     fstream f(location + "\\police.txt");
     int pay[6][3], num[6][3], yPos = 0, xPos = 0;
