@@ -25,7 +25,7 @@ int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+    string location = "H:\\Documents\\Assignments";
 
     fstream f(location + "\\police.txt");
     int pay[6][3], num[6][3], yPos = 0, xPos = 0;
