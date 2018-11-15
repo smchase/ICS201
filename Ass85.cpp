@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include <vector>
 #include <algorithm>
 #include <windows.h>
 #include <stdio.h>
@@ -9,6 +8,7 @@
 
 using namespace std;
 
+// Credit: http://www.cplusplus.com/articles/4z18T05o/#Windows
 void clear ()
 {
   HANDLE                     hStdOut;
@@ -46,9 +46,32 @@ void clear ()
   SetConsoleCursorPosition( hStdOut, homeCoords );
 };
 
-void play (int m[2], int c[2], string maze[10], vector<int[2]> moves)
+void play (int m[2], int c[2], string mz[10], int i)
 {
+    clear();
+    for (int y = 0; y < 10; y ++) {
+        if (m[0] == y || c[0] == y) {
+            for  (int x = 0; x < 16; x ++) {
+                if (y == m[0] && x == m[1]) printf("@");
+                else if (y == c[0] && x == c[1]) printf("%c", i%2 == 0 ? '\\' : '/');
+                else printf("%c", mz[y][x]);
+            }
+        }
+        else printf("%s", mz[y].c_str());
+        printf("\n");
+    }
+    if (m[0] == c[0] && m[1] == c[1]) return;
 
+    int ry, rx;
+    do {
+        ry = (rand()%3)-1;
+        rx = (rand()%3)-1;
+    } while (mz[m[0]+ry][m[1]+rx] != ' ');
+    m[0] += ry;
+    m[1] += rx;
+
+    Sleep(100);
+    play(m, c, mz, i + 1);
 }
 
 int main ()
@@ -79,7 +102,7 @@ int main ()
         cheese[1] = rand() % 16;
     } while (maze[cheese[0]][cheese[1]] != ' ' && cheese != mouse);
 
-    play(mouse, cheese, maze);
+    play(mouse, cheese, maze, 0);
 }
 
 /*

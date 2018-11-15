@@ -1,7 +1,0 @@
-C:\Users\dumba\OneDrive\Documents\GitHub\Assignments\Ass85.cpp: In function 'int main()':
-C:\Users\dumba\OneDrive\Documents\GitHub\Assignments\Ass85.cpp:82:29: error: too few arguments to function 'void play(int*, int*, std::__cxx11::string*, std::vector<int [2]>)'
-     play(mouse, cheese, maze);
-                             ^
-C:\Users\dumba\OneDrive\Documents\GitHub\Assignments\Ass85.cpp:49:6: note: declared here
- void play (int m[2], int c[2], string maze[10], vector<int[2]> moves)
-      ^~~~
