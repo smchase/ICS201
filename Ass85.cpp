@@ -4,6 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <windows.h>
+#include <stdio.h>
+#include <time.h>
 
 using namespace std;
 
@@ -44,19 +46,14 @@ void clear ()
   SetConsoleCursorPosition( hStdOut, homeCoords );
 };
 
-void genPos (int arr[2], string m[10][16], int n[2])
-{
-
-}
-
-void play (int m[2], int c[2], string maze[10][16], vector<int[2]> moves)
+void play (int m[2], int c[2], string maze[10], vector<int[2]> moves)
 {
 
 }
 
 int main ()
 {
-    string maze[10][16] = {
+    string maze[10]/*[16]*/ = {
         {"%%%%%%%%%%%%%%%%"},
         {"%%             %"},
         {"%%%   %   %    %"},
@@ -69,9 +66,18 @@ int main ()
         {"%%%%%%%%%%%%%%%%"}
     };
 
+    srand(time(NULL));
     int mouse[2], cheese[2];
-    genPos(mouse, maze);
-    genPos(cheese, maze, mouse);
+
+    do {
+        mouse[0] = rand() % 10;
+        mouse[1] = rand() % 16;
+    } while (maze[mouse[0]][mouse[1]] != ' ');
+
+    do {
+        cheese[0] = rand() % 10;
+        cheese[1] = rand() % 16;
+    } while (maze[cheese[0]][cheese[1]] != ' ' && cheese != mouse);
 
     play(mouse, cheese, maze);
 }
