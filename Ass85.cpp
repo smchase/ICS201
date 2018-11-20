@@ -66,7 +66,7 @@ void play (int m[2], int c[2], string mz[10], int i)
     do {
         ry = (rand()%3)-1;
         rx = (rand()%3)-1;
-    } while (mz[m[0]+ry][m[1]+rx] != ' ');
+    } while (mz[m[0]+ry][m[1]+rx] == '%');
     m[0] += ry;
     m[1] += rx;
 
