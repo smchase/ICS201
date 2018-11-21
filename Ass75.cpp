@@ -26,8 +26,8 @@ int main ()
         if (out == "") {
             data.push_back(row);
             row.clear();
-        } else
-            row.push_back(out);
+        }
+        else row.push_back(out);
     }
 
     printf("Type the corresponding number to select from menu:\n1. Display\n2. Add\n3. Delete\n4. Mofify\n5. Save\n6. Exit\n\nNumber: ");

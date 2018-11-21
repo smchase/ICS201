@@ -1,0 +1,14 @@
+H:\Documents\Assignments\braille.cpp: In function 'int main()':
+H:\Documents\Assignments\braille.cpp:21:38: error: no matching function for call to 'std::vector<std::vector<std::__cxx11::basic_string<char> > >::push_back()'
+         if (n % 3 == 0) br.push_back();
+                                      ^
+In file included from c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\vector:64:0,
+                 from H:\Documents\Assignments\braille.cpp:4:
+c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_vector.h:914:7: note: candidate: void std::vector<_Tp, _Alloc>::push_back(const value_type&) [with _Tp = std::vector<std::__cxx11::basic_string<char> >; _Alloc = std::allocator<std::vector<std::__cxx11::basic_string<char> > >; std::vector<_Tp, _Alloc>::value_type = std::vector<std::__cxx11::basic_string<char> >]
+       push_back(const value_type& __x)
+       ^~~~~~~~~
+c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_vector.h:914:7: note:   candidate expects 1 argument, 0 provided
+c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_vector.h:932:7: note: candidate: void std::vector<_Tp, _Alloc>::push_back(std::vector<_Tp, _Alloc>::value_type&&) [with _Tp = std::vector<std::__cxx11::basic_string<char> >; _Alloc = std::allocator<std::vector<std::__cxx11::basic_string<char> > >; std::vector<_Tp, _Alloc>::value_type = std::vector<std::__cxx11::basic_string<char> >]
+       push_back(value_type&& __x)
+       ^~~~~~~~~
+c:\mingw\lib\gcc\mingw32\6.3.0\include\c++\bits\stl_vector.h:932:7: note:   candidate expects 1 argument, 0 provided
