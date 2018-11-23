@@ -1,10 +1,19 @@
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <stdio.h>
 
 using namespace std;
 
 int main ()
 {
-    
+    fstream f("H:\\Documents\\Assignments\\maze.txt");
+    string out;
+
+    while (f.eof()) {
+        getline(f, out);
+
+    }
 }
 
 /*
