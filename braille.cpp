@@ -11,140 +11,36 @@ using namespace std;
 int main ()
 {
     fstream f("H:\\Documents\\Assignments\\DATA21.txt");
-    string out, ltr[3];
+    string out, ltr;
     vector<string> br;
     vector<string> txt;
-    string ref[26][3] = {
-        { // a
-            "xo",
-            "oo",
-            "oo"
-        },
-        { // b
-            "xo",
-            "xo",
-            "oo"
-        },
-        { // c
-            "xx",
-            "oo",
-            "oo"
-        },
-        { // d
-            "xx",
-            "ox",
-            "oo"
-        },
-        { // e
-            "xo",
-            "ox",
-            "oo"
-        },
-        { // f
-            "xx",
-            "xo",
-            "oo"
-        },
-        { // g
-            "xx",
-            "xx",
-            "oo"
-        },
-        { // h
-            "xo",
-            "xx",
-            "oo"
-        },
-        { // i
-            "ox",
-            "xo",
-            "oo"
-        },
-        { // j
-            "ox",
-            "xx",
-            "oo"
-        },
-        { // k
-            "xo",
-            "oo",
-            "xo"
-        },
-        { // l
-            "xo",
-            "xo",
-            "xo"
-        },
-        { // m
-            "xx",
-            "oo",
-            "xo"
-        },
-        { // n
-            "xx",
-            "ox",
-            "xo"
-        },
-        { // o
-            "xo",
-            "ox",
-            "xo"
-        },
-        { // p
-            "xx",
-            "xo",
-            "xo"
-        },
-        { // q
-            "xx",
-            "xx",
-            "xo"
-        },
-        { // r
-            "xo",
-            "xx",
-            "xo"
-        },
-        { // s
-            "ox",
-            "xo",
-            "xo"
-        },
-        { // t
-            "ox",
-            "xx",
-            "xo"
-        },
-        { // u
-            "xo",
-            "oo",
-            "xx"
-        },
-        { // v
-            "xo",
-            "xo",
-            "xx"
-        },
-        { // w
-            "ox",
-            "xx",
-            "ox"
-        },
-        { // x
-            "xx",
-            "oo",
-            "xx"
-        },
-        { // y
-            "xx",
-            "ox",
-            "xx"
-        },
-        { // z
-            "xo",
-            "ox",
-            "xx"
-        }
+    string ref[26] = {
+        "xooooo", // a
+        "xoxooo", // b
+        "xxoooo", // c
+        "xxoxoo", // d
+        "xooxoo", // e
+        "xxxooo", // f
+        "xxxxoo", // g
+        "xoxxoo", // h
+        "oxxooo", // i
+        "oxxxoo", // j
+        "xoooxo", // k
+        "xoxoxo", // l
+        "xxooxo", // m
+        "xxoxxo", // n
+        "xooxxo", // o
+        "xxxoxo", // p
+        "xxxxxo", // q
+        "xoxxxo", // r
+        "oxxoxo", // s
+        "oxxxxo", // t
+        "xoooxx", // u
+        "xoxoxx", // v
+        "oxxxox", // w
+        "xxooxx", // x
+        "xxoxxx", // y
+        "xooxxx"  // z
     };
 
     while (!f.eof()) {
@@ -154,11 +50,9 @@ int main ()
 
     for (int i = 0; i < br.size(); i += 3) {
         for (int j = 0; j < br[i].length(); j += 2) {
-            ltr[0] = br[i].substr(j, 2);
-            ltr[1] = br[i].substr(j+1, 2);
-            ltr[2] = br[i].substr(j+2, 2);
-
-            printf("%i\n", distance(ref, find(ref, ref+26, ltr)));
+            ltr = br[i].substr(j, 2) + br[i+1].substr(j, 2) + br[i+2].substr(j, 2);
+            ltr == "oooooo" ? printf(" ") : printf("%c", (char)97+distance(ref, find(ref, ref+26, ltr)));
         }
+        printf("\n");
     }
 }
