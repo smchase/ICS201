@@ -7,12 +7,16 @@ using namespace std;
 
 int main ()
 {
-    fstream f("H:\\Documents\\Assignments\\maze.txt");
+    // School: H:\\Documents\\Assignments
+    // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
+    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+
+    fstream f(location + "\\maze.txt");
     string out;
 
-    while (f.eof()) {
+    while (!f.eof()) {
         getline(f, out);
-
+        cout << out << endl;
     }
 }
 

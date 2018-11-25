@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include <stdlib.h>
 #include <string>
 #include <vector>
 #include <stdio.h>
-#include <algorithm>
 
 using namespace std;
 
@@ -12,7 +10,7 @@ int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "H:\\Documents\\Assignments";
+    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
 
     fstream f(location + "\\empinfo.txt");
     int inIn, found;
@@ -117,6 +115,7 @@ int main ()
                         for (int x = 0; x < data[y].size(); x ++) {
                             row.push_back(data[y][x]);
                         }
+                        break;
                     }
                 }
 
