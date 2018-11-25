@@ -2,8 +2,50 @@
 #include <fstream>
 #include <string>
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 using namespace std;
+
+void solve (char mz[12][12], int m[2], int c[2])
+{
+    if (m[0] == c[0] && m[1] == c[1]) {
+        for (int i = 0; i < 12; i ++) {
+            for (int j = 0; j < 12; j ++) {
+                printf("%c", c[0]==i&&c[1]==j ? 'C' : (mz[i][j] == 'M' || mz[i][j] == '%' ? mz[i][j] : ' '));
+            }
+            printf("\n");
+        }
+        printf("\n");
+        for (int i = 0; i < 12; i ++) {
+            for (int j = 0; j < 12; j ++) {
+                printf("%c", c[0]==i&&c[1]==j ? 'C' : mz[i][j]);
+            }
+            printf("\n");
+        }
+    } else {
+        if (mz[m[0]+1][m[1]] == ' ') {
+            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
+            m[0] ++;
+        } else
+        if (mz[m[0]-1][m[1]] == ' ') {
+            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
+            m[0] --;
+        } else
+        if (mz[m[0]][m[1]+1] == ' ') {
+            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
+            m[1] ++;
+        } else
+        if (mz[m[0]][m[1]-1] == ' ') {
+            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
+            m[1] --;
+        } else {
+
+        }
+
+        solve(mz, m, c);
+    }
+}
 
 int main ()
 {
@@ -11,13 +53,32 @@ int main ()
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
     string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
 
-    fstream f(location + "\\maze.txt");
+    srand(time(NULL));
+    char maze[12][12];
+    fstream file(location + "\\maze.txt");
     string out;
+    int y = 0, mouse[2], cheese[2];
 
-    while (!f.eof()) {
-        getline(f, out);
-        cout << out << endl;
+    while (!file.eof()) {
+        getline(file, out);
+        for (int x = 0; x < 12; x ++) {
+            maze[y][x] = out[x];
+        }
+        y ++;
     }
+
+    do {
+        mouse[0] = rand()%12;
+        mouse[1] = rand()%12;
+    } while (maze[mouse[0]][mouse[1]] != ' ');
+    maze[mouse[0]][mouse[1]] = 'M';
+
+    do {
+        cheese[0] = rand()%12;
+        cheese[1] = rand()%12;
+    } while (maze[cheese[0]][cheese[1]] != ' ');
+
+    solve(maze, mouse, cheese);
 }
 
 /*
