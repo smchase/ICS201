@@ -7,9 +7,10 @@
 
 using namespace std;
 
-void solve (char mz[12][12], int m[2], int c[2])
+void solve (char mz[12][12], int m[2], int c[2], char d)
 {
     if (m[0] == c[0] && m[1] == c[1]) {
+        printf("\n");
         for (int i = 0; i < 12; i ++) {
             for (int j = 0; j < 12; j ++) {
                 printf("%c", c[0]==i&&c[1]==j ? 'C' : (mz[i][j] == 'M' || mz[i][j] == '%' ? mz[i][j] : ' '));
@@ -24,26 +25,20 @@ void solve (char mz[12][12], int m[2], int c[2])
             printf("\n");
         }
     } else {
-        if (mz[m[0]+1][m[1]] == ' ') {
-            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
-            m[0] ++;
-        } else
-        if (mz[m[0]-1][m[1]] == ' ') {
-            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
-            m[0] --;
-        } else
-        if (mz[m[0]][m[1]+1] == ' ') {
-            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
-            m[1] ++;
-        } else
-        if (mz[m[0]][m[1]-1] == ' ') {
-            if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
-            m[1] --;
-        } else {
+        if (mz[m[0]][m[1]] != 'M') mz[m[0]][m[1]] = 'o';
 
-        }
+        char arr[4] = {'^', 'v', '>', '<'};
+        do {
+            d = arr[rand()%4];
+        } while (d == '>' && mz[m[0]][m[1]+1] == '%' || d == '<' && mz[m[0]][m[1]-1] == '%' || d == '^' && mz[m[0]-1][m[1]] == '%' || d == 'v' && mz[m[0]+1][m[1]] == '%');
 
-        solve(mz, m, c);
+        if (d == '>') m[1] ++;
+        else if (d == '<') m[1] --;
+        else if (d == '^') m[0] --;
+        else if (d == 'v') m[0] ++;
+
+        printf("%c", d);
+        solve(mz, m, c, d);
     }
 }
 
@@ -51,7 +46,7 @@ int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+    string location = "H:\\Documents\\Assignments";
 
     srand(time(NULL));
     char maze[12][12];
@@ -78,7 +73,7 @@ int main ()
         cheese[1] = rand()%12;
     } while (maze[cheese[0]][cheese[1]] != ' ');
 
-    solve(maze, mouse, cheese);
+    solve(maze, mouse, cheese, '>');
 }
 
 /*
