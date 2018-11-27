@@ -1,14 +1,22 @@
+/*
+TODO
+rewrite with find()
+recusion possibility finder
+*/
+
 #include <iostream>
 #include <fstream>
 #include <vector>
 #include <string>
 #include <stdio.h>
+#include <algorithm>
 
 using namespace std;
 
 struct w {
-
-} vector
+    string word;
+    int pos[2];
+};
 
 int main ()
 {
@@ -21,9 +29,24 @@ int main ()
     vector<string> tests;
     while (file >> out) tests.push_back(out);
 
-    vector<
+    string arr[10] = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
+    vector<w> preWords;
+    vector<vector<w>> words;
     for (int i = 0; i < tests.size(); i ++) {
-        cout << tests[i] << endl;
+        for (int j = 0; j < tests[i].length(); j ++) {
+            for (int k = 2; k <= tests[i].length()-j; k ++) {
+                if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) preWords.push_back({tests[i].substr(j, k), {j, j+k}});
+            }
+        }
+        words.push_back(preWords);
+        preWords.clear();
+    }
+
+    for (int i = 0; i < words.size(); i ++) {
+        for (int j = 0; j < words[i].size(); j ++) {
+            printf("Word: %s, Start: %i, End: %i, Test: %i\n", words[i][j].word.c_str(), words[i][j].pos[0], words[i][j].pos[1], i);
+        }
+        printf("\n");
     }
 }
 
