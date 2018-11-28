@@ -12,9 +12,9 @@ struct w {
     int pos[2];
 };
 
-void solve (vector<w> &w, vector<vector<int>> &c, int i)
+void solve (vector<w> &w, vector<vector<int>> &c)
 {
-    
+
 }
 
 int main ()
@@ -32,6 +32,7 @@ int main ()
     vector<w> preWords;
     vector<vector<w>> words;
     for (int i = 0; i < tests.size(); i ++) {
+        printf("%s ", tests[i].c_str());
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= tests[i].length()-j; k ++) {
                 if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) preWords.push_back({tests[i].substr(j, k), {j, j+k}});
@@ -40,20 +41,22 @@ int main ()
         words.push_back(preWords);
         preWords.clear();
     }
+    printf("\n");
 
-    for (int i = 0; i < words.size(); i ++) {
+    /*for (int i = 0; i < words.size(); i ++) {
         for (int j = 0; j < words[i].size(); j ++) {
             printf("Word: %s, Start: %i, End: %i, Test: %i\n", words[i][j].word.c_str(), words[i][j].pos[0], words[i][j].pos[1], i);
         }
         printf("\n");
-    }
+    }*/
 
     vector<vector<int>> counted;
     for (int i = 0; i < words.size(); i ++) {
         counted.clear();
-        solve(words[i], counted, 0);
-        printf("%i ", c.size());
+        solve(words[i], counted);
+        printf("%i ", counted.size());
     }
+    printf("\n");
 }
 
 /*
