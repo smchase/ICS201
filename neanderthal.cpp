@@ -33,7 +33,7 @@ int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+    string location = "H:\\Documents\\Assignments";
 
     // load tests
     fstream file(location + "\\DATA41.txt");
