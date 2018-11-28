@@ -1,9 +1,3 @@
-/*
-TODO
-rewrite with find()
-recusion possibility finder
-*/
-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -32,19 +26,11 @@ int main ()
     string arr[10] = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
     vector<w> preWords;
     vector<vector<w>> words;
-    /*for (int i = 0; i < tests.size(); i ++) {
+    for (int i = 0; i < tests.size(); i ++) {
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= tests[i].length()-j; k ++) {
                 if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) preWords.push_back({tests[i].substr(j, k), {j, j+k}});
             }
-        }
-        words.push_back(preWords);
-        preWords.clear();
-    }*/
-
-    for (int i = 0; i < tests.size(); i ++) {
-        for (int j = 0; j < 10; j ++) {
-            while (find())
         }
         words.push_back(preWords);
         preWords.clear();
