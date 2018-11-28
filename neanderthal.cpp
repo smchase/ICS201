@@ -12,6 +12,11 @@ struct w {
     int pos[2];
 };
 
+void solve (vector<w> &w, vector<vector<int>> &c, int i)
+{
+    
+}
+
 int main ()
 {
     // School: H:\\Documents\\Assignments
@@ -41,6 +46,13 @@ int main ()
             printf("Word: %s, Start: %i, End: %i, Test: %i\n", words[i][j].word.c_str(), words[i][j].pos[0], words[i][j].pos[1], i);
         }
         printf("\n");
+    }
+
+    vector<vector<int>> counted;
+    for (int i = 0; i < words.size(); i ++) {
+        counted.clear();
+        solve(words[i], counted, 0);
+        printf("%i ", c.size());
     }
 }
 
