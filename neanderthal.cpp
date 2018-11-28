@@ -12,29 +12,43 @@ struct w {
     int pos[2];
 };
 
-void solve (vector<w> &w, vector<vector<int>> &c)
+void solve (vector<w> &w, int &n, int p, int l, int s = 0)
 {
-
+    int first = -1, last = -1;
+    if (p == l) n ++;
+    else {
+        for (int i = s; i < w.size(); i ++) {
+            if (w[i].pos[0] == p && w[i-1].pos[0] != p) first = i;
+            if (w[i].pos[0] == p && w[i+1].pos[0] != p) last = i;
+        }
+        if (first != -1 && last != -1) {
+            for (int i = first; i <= last; i ++) {
+                solve(w, n, w[i].pos[1], l, i);
+            }
+        }
+    }
 }
 
 int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "H:\\Documents\\Assignments";
+    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
 
+    // load tests
     fstream file(location + "\\DATA41.txt");
     string out;
     vector<string> tests;
     while (file >> out) tests.push_back(out);
 
+    // find all working words and add them to array
     string arr[10] = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
     vector<w> preWords;
     vector<vector<w>> words;
     for (int i = 0; i < tests.size(); i ++) {
         printf("%s ", tests[i].c_str());
         for (int j = 0; j < tests[i].length(); j ++) {
-            for (int k = 2; k <= tests[i].length()-j; k ++) {
+            for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
                 if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) preWords.push_back({tests[i].substr(j, k), {j, j+k}});
             }
         }
@@ -43,6 +57,7 @@ int main ()
     }
     printf("\n");
 
+    // view all words added to words array
     /*for (int i = 0; i < words.size(); i ++) {
         for (int j = 0; j < words[i].size(); j ++) {
             printf("Word: %s, Start: %i, End: %i, Test: %i\n", words[i][j].word.c_str(), words[i][j].pos[0], words[i][j].pos[1], i);
@@ -50,11 +65,12 @@ int main ()
         printf("\n");
     }*/
 
-    vector<vector<int>> counted;
+    // use recursion to find all working sequences of words
+    int num = 0;
     for (int i = 0; i < words.size(); i ++) {
-        counted.clear();
-        solve(words[i], counted);
-        printf("%i ", counted.size());
+        num = 0;
+        solve(words[i], num, 0, tests[i].size());
+        printf("%i ", num);
     }
     printf("\n");
 }
