@@ -15,7 +15,7 @@ struct w {
     int pos[2];
 };
 
-void solve (vector<w> &w, int &n, int p, int l, int s = 0)
+void solve (vector<w> &w, int &n, int p, int l, int s)
 {
     if (p == l)
         n ++;
@@ -29,10 +29,10 @@ int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+    string location = "H:\\Documents\\Assignments";
 
     // load tests
-    fstream file(location + "\\DATA42.txt");
+    fstream file(location + "\\DATA41.txt");
     string out;
     vector<string> tests;
     while (file >> out) tests.push_back(out);
@@ -57,7 +57,7 @@ int main ()
     int num = 0;
     for (int i = 0; i < words.size(); i ++) {
         num = 0;
-        solve(words[i], num, 0, tests[i].size());
+        solve(words[i], num, 0, tests[i].size(), 0);
         printf("%i ", num);
     }
     printf("\n");
