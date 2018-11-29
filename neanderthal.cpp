@@ -1,5 +1,5 @@
-// 41: 99s
-// 42: 58s
+// 41: 30s
+// 42: 15s
 
 #include <iostream>
 #include <fstream>
@@ -18,21 +18,19 @@ struct w {
 void solve (vector<vector<w>> &w, int &n, int p, int l)
 {
     if (p == l) n ++;
-    else {
-        for (int i = 0; i < w[p].size(); i ++) {
+    else
+        for (int i = 0; i < w[p].size(); i ++)
             solve(w, n, w[p][i].pos[1], l);
-        }
-    }
 }
 
 int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+    string location = "H:\\Documents\\Assignments";
 
     // load tests
-    fstream file(location + "\\DATA41.txt");
+    fstream file(location + "\\DATA42.txt");
     string out;
     vector<string> tests;
     while (file >> out) tests.push_back(out);
@@ -55,15 +53,6 @@ int main ()
         words1.clear();
     }
     printf("\n");
-
-    /*for (int i = 0; i < words.size(); i ++) {
-        for (int j = 0; j < words[i].size(); j ++) {
-            for (int k = 0; k < words[i][j].size(); k ++) {
-                printf("Word: %s, Start: %i, End: %i, [%i][%i][%i]\n", words[i][j][k].word.c_str(), words[i][j][k].pos[0], words[i][j][k].pos[1], i, j, k);
-            }
-        }
-        cout << endl;
-    }*/
 
     // use recursion to find all working sequences of words
     int num = 0;
