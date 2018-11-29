@@ -1,5 +1,5 @@
-// 41: 50s
-// 42: 26s
+// 41: 99s
+// 42: 58s
 
 #include <iostream>
 #include <fstream>
@@ -15,21 +15,21 @@ struct w {
     int pos[2];
 };
 
-void solve (vector<w> &w, int &n, int p, int l, int s)
+void solve (vector<vector<w>> &w, int &n, int p, int l)
 {
-    if (p == l)
-        n ++;
-    else
-        for (int i = s; i < w.size(); i ++)
-            if (w[i].pos[0] == p) solve(w, n, w[i].pos[1], l, i);
-            else if (w[i].pos[0] > p) break;
+    if (p == l) n ++;
+    else {
+        for (int i = 0; i < w[p].size(); i ++) {
+            solve(w, n, w[p][i].pos[1], l);
+        }
+    }
 }
 
 int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "H:\\Documents\\Assignments";
+    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
 
     // load tests
     fstream file(location + "\\DATA41.txt");
@@ -39,25 +39,37 @@ int main ()
 
     // find all working words and add them to array
     string arr[10] = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
-    vector<w> preWords;
-    vector<vector<w>> words;
+    vector<vector<vector<w>>> words;
+    vector<vector<w>> words1;
+    vector<w> words2;
     for (int i = 0; i < tests.size(); i ++) {
         printf("%s ", tests[i].c_str());
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
-                if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) preWords.push_back({tests[i].substr(j, k), {j, j+k}});
+                if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) words2.push_back({tests[i].substr(j, k), {j, j+k}});
             }
+            words1.push_back(words2);
+            words2.clear();
         }
-        words.push_back(preWords);
-        preWords.clear();
+        words.push_back(words1);
+        words1.clear();
     }
     printf("\n");
+
+    /*for (int i = 0; i < words.size(); i ++) {
+        for (int j = 0; j < words[i].size(); j ++) {
+            for (int k = 0; k < words[i][j].size(); k ++) {
+                printf("Word: %s, Start: %i, End: %i, [%i][%i][%i]\n", words[i][j][k].word.c_str(), words[i][j][k].pos[0], words[i][j][k].pos[1], i, j, k);
+            }
+        }
+        cout << endl;
+    }*/
 
     // use recursion to find all working sequences of words
     int num = 0;
     for (int i = 0; i < words.size(); i ++) {
         num = 0;
-        solve(words[i], num, 0, tests[i].size(), 0);
+        solve(words[i], num, 0, tests[i].size());
         printf("%i ", num);
     }
     printf("\n");
