@@ -1,3 +1,6 @@
+// 41: 99s
+// 42: 58s
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -14,17 +17,15 @@ struct w {
 
 void solve (vector<w> &w, int &n, int p, int l, int s = 0)
 {
-    int first = -1, last = -1;
+    int first = 0, last = -1;
     if (p == l) n ++;
     else {
         for (int i = s; i < w.size(); i ++) {
             if (w[i].pos[0] == p && w[i-1].pos[0] != p) first = i;
             if (w[i].pos[0] == p && w[i+1].pos[0] != p) last = i;
         }
-        if (first != -1 && last != -1) {
-            for (int i = first; i <= last; i ++) {
-                solve(w, n, w[i].pos[1], l, i);
-            }
+        for (int i = first; i <= last; i ++) {
+            solve(w, n, w[i].pos[1], l, i);
         }
     }
 }
@@ -56,14 +57,6 @@ int main ()
         preWords.clear();
     }
     printf("\n");
-
-    // view all words added to words array
-    /*for (int i = 0; i < words.size(); i ++) {
-        for (int j = 0; j < words[i].size(); j ++) {
-            printf("Word: %s, Start: %i, End: %i, Test: %i\n", words[i][j].word.c_str(), words[i][j].pos[0], words[i][j].pos[1], i);
-        }
-        printf("\n");
-    }*/
 
     // use recursion to find all working sequences of words
     int num = 0;
