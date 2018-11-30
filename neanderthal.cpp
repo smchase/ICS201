@@ -30,7 +30,7 @@ int main ()
     string location = "H:\\Documents\\Assignments";
 
     // load tests
-    fstream file(location + "\\DATA42.txt");
+    fstream file(location + "\\DATA41.txt");
     string out;
     vector<string> tests;
     while (file >> out) tests.push_back(out);
