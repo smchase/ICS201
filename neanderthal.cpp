@@ -1,5 +1,5 @@
-// 41: 30s
-// 42: 15s
+// 41: 26s
+// 42: 13s
 
 #include <iostream>
 #include <fstream>
