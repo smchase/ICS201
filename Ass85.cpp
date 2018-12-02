@@ -12,7 +12,7 @@ struct coor {
     vector<string> path;
 };
 
-void solve(vector<coor> &coorList, vector<string> &maze, array<int, 2> &cheese, int i) {
+void solve (vector<coor> &coorList, vector<string> &maze, array<int, 2> &cheese, int i) {
     if (coorList[i].pos == cheese) {
         printf("\nShortest Path:\n");
         for (int j = 0; j < coorList[i].path.size(); j ++) {
@@ -51,7 +51,7 @@ int main ()
 {
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments";
+    string location = "H:\\Documents\\Assignments";
     fstream file(location + "\\maze.txt");
     string out;
     vector<string> maze;
