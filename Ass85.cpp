@@ -18,7 +18,6 @@ void solve(vector<coor> &coorList, vector<string> &maze, array<int, 2> &cheese, 
         for (int j = 0; j < coorList[i].path.size(); j ++) {
             printf("%i. %s\n", j+1, coorList[i].path[j].c_str());
         }
-        return;
     } else {
         if (maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == ' ' || maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == 'C') {
             maze[coorList[i].pos[0]-1][coorList[i].pos[1]] = '+';
@@ -44,8 +43,8 @@ void solve(vector<coor> &coorList, vector<string> &maze, array<int, 2> &cheese, 
             coorList.push_back({{coorList[i].pos[0], coorList[i].pos[1]+1}, coorList[i].path});
             coorList[i].path.pop_back();
         }
+        solve(coorList, maze, cheese, i+1);
     }
-    solve(coorList, maze, cheese, i+1);
 }
 
 int main ()
