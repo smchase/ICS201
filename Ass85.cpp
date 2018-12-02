@@ -7,43 +7,43 @@
 
 using namespace std;
 
-struct coor {
+struct coord {
     array<int, 2> pos;
     vector<string> path;
 };
 
-void solve (vector<coor> &coorList, vector<string> &maze, array<int, 2> &cheese, int i) {
-    if (coorList[i].pos == cheese) {
+void solve (vector<coord> &coordList, vector<string> &maze, array<int, 2> &cheese, int i) {
+    if (coordList[i].pos == cheese) {
         printf("\nShortest Path:\n");
-        for (int j = 0; j < coorList[i].path.size(); j ++) {
-            printf("%i. %s\n", j+1, coorList[i].path[j].c_str());
+        for (int j = 0; j < coordList[i].path.size(); j ++) {
+            printf("%i. %s\n", j+1, coordList[i].path[j].c_str());
         }
     } else {
-        if (maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == ' ' || maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == 'C') {
-            maze[coorList[i].pos[0]-1][coorList[i].pos[1]] = '+';
-            coorList[i].path.push_back("UP");
-            coorList.push_back({{coorList[i].pos[0]-1, coorList[i].pos[1]}, coorList[i].path});
-            coorList[i].path.pop_back();
+        if (maze[coordList[i].pos[0]-1][coordList[i].pos[1]] == ' ' || maze[coordList[i].pos[0]-1][coordList[i].pos[1]] == 'C') {
+            maze[coordList[i].pos[0]-1][coordList[i].pos[1]] = '+';
+            coordList[i].path.push_back("UP");
+            coordList.push_back({{coordList[i].pos[0]-1, coordList[i].pos[1]}, coordList[i].path});
+            coordList[i].path.pop_back();
         }
-        if (maze[coorList[i].pos[0]+1][coorList[i].pos[1]] == ' ' || maze[coorList[i].pos[0]+1][coorList[i].pos[1]] == 'C') {
-            maze[coorList[i].pos[0]+1][coorList[i].pos[1]] = '+';
-            coorList[i].path.push_back("DOWN");
-            coorList.push_back({{coorList[i].pos[0]+1, coorList[i].pos[1]}, coorList[i].path});
-            coorList[i].path.pop_back();
+        if (maze[coordList[i].pos[0]+1][coordList[i].pos[1]] == ' ' || maze[coordList[i].pos[0]+1][coordList[i].pos[1]] == 'C') {
+            maze[coordList[i].pos[0]+1][coordList[i].pos[1]] = '+';
+            coordList[i].path.push_back("DOWN");
+            coordList.push_back({{coordList[i].pos[0]+1, coordList[i].pos[1]}, coordList[i].path});
+            coordList[i].path.pop_back();
         }
-        if (maze[coorList[i].pos[0]][coorList[i].pos[1]-1] == ' ' || maze[coorList[i].pos[0]][coorList[i].pos[1]-1] == 'C') {
-            maze[coorList[i].pos[0]][coorList[i].pos[1]-1] = '+';
-            coorList[i].path.push_back("LEFT");
-            coorList.push_back({{coorList[i].pos[0], coorList[i].pos[1]-1}, coorList[i].path});
-            coorList[i].path.pop_back();
+        if (maze[coordList[i].pos[0]][coordList[i].pos[1]-1] == ' ' || maze[coordList[i].pos[0]][coordList[i].pos[1]-1] == 'C') {
+            maze[coordList[i].pos[0]][coordList[i].pos[1]-1] = '+';
+            coordList[i].path.push_back("LEFT");
+            coordList.push_back({{coordList[i].pos[0], coordList[i].pos[1]-1}, coordList[i].path});
+            coordList[i].path.pop_back();
         }
-        if (maze[coorList[i].pos[0]][coorList[i].pos[1]+1] == ' ' || maze[coorList[i].pos[0]][coorList[i].pos[1]+1] == 'C') {
-            maze[coorList[i].pos[0]][coorList[i].pos[1]+1] = '+';
-            coorList[i].path.push_back("RIGHT");
-            coorList.push_back({{coorList[i].pos[0], coorList[i].pos[1]+1}, coorList[i].path});
-            coorList[i].path.pop_back();
+        if (maze[coordList[i].pos[0]][coordList[i].pos[1]+1] == ' ' || maze[coordList[i].pos[0]][coordList[i].pos[1]+1] == 'C') {
+            maze[coordList[i].pos[0]][coordList[i].pos[1]+1] = '+';
+            coordList[i].path.push_back("RIGHT");
+            coordList.push_back({{coordList[i].pos[0], coordList[i].pos[1]+1}, coordList[i].path});
+            coordList[i].path.pop_back();
         }
-        solve(coorList, maze, cheese, i+1);
+        solve(coordList, maze, cheese, i+1);
     }
 }
 
@@ -52,6 +52,7 @@ int main ()
     // School: H:\\Documents\\Assignments
     // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
     string location = "H:\\Documents\\Assignments";
+
     fstream file(location + "\\maze.txt");
     string out;
     vector<string> maze;
@@ -67,7 +68,7 @@ int main ()
         printf("\n");
     }
 
-    vector<coor> coorList;
-    coorList.push_back({mouse, {}});
-    solve(coorList, maze, cheese, 0);
+    vector<coord> coordList;
+    coordList.push_back({mouse, {}});
+    solve(coordList, maze, cheese, 0);
 }
