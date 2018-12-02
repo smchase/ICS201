@@ -20,28 +20,28 @@ void solve(vector<coor> &coorList, vector<string> &maze, array<int, 2> &cheese, 
         }
         return;
     } else {
-        if (maze[coorList[i].pos[0]][coorList[i].pos[1]-1] == ' ' || maze[coorList[i].pos[0]][coorList[i].pos[1]-1] == 'C') {
-            maze[coorList[i].pos[0]][coorList[i].pos[1]-1] = '+';
+        if (maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == ' ' || maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == 'C') {
+            maze[coorList[i].pos[0]-1][coorList[i].pos[1]] = '+';
             coorList[i].path.push_back("UP");
-            coorList.push_back({{coorList[i].pos[0], coorList[i].pos[1]-1}, coorList[i].path});
+            coorList.push_back({{coorList[i].pos[0]-1, coorList[i].pos[1]}, coorList[i].path});
             coorList[i].path.pop_back();
         }
         if (maze[coorList[i].pos[0]+1][coorList[i].pos[1]] == ' ' || maze[coorList[i].pos[0]+1][coorList[i].pos[1]] == 'C') {
             maze[coorList[i].pos[0]+1][coorList[i].pos[1]] = '+';
-            coorList[i].path.push_back("RIGHT");
+            coorList[i].path.push_back("DOWN");
             coorList.push_back({{coorList[i].pos[0]+1, coorList[i].pos[1]}, coorList[i].path});
+            coorList[i].path.pop_back();
+        }
+        if (maze[coorList[i].pos[0]][coorList[i].pos[1]-1] == ' ' || maze[coorList[i].pos[0]][coorList[i].pos[1]-1] == 'C') {
+            maze[coorList[i].pos[0]][coorList[i].pos[1]-1] = '+';
+            coorList[i].path.push_back("LEFT");
+            coorList.push_back({{coorList[i].pos[0], coorList[i].pos[1]-1}, coorList[i].path});
             coorList[i].path.pop_back();
         }
         if (maze[coorList[i].pos[0]][coorList[i].pos[1]+1] == ' ' || maze[coorList[i].pos[0]][coorList[i].pos[1]+1] == 'C') {
             maze[coorList[i].pos[0]][coorList[i].pos[1]+1] = '+';
-            coorList[i].path.push_back("DOWN");
+            coorList[i].path.push_back("RIGHT");
             coorList.push_back({{coorList[i].pos[0], coorList[i].pos[1]+1}, coorList[i].path});
-            coorList[i].path.pop_back();
-        }
-        if (maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == ' ' || maze[coorList[i].pos[0]-1][coorList[i].pos[1]] == 'C') {
-            maze[coorList[i].pos[0]-1][coorList[i].pos[1]] = '+';
-            coorList[i].path.push_back("LEFT");
-            coorList.push_back({{coorList[i].pos[0]-1, coorList[i].pos[1]}, coorList[i].path});
             coorList[i].path.pop_back();
         }
     }
