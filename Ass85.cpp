@@ -9,47 +9,36 @@
 
 using namespace std;
 
-void solve (string mz[], int m[2], int c[2], vector<string> &p, int mvs, int &s)
+void solve (string mz[], int m[2], string *p, int mvs, int &s)
 {
-    if (m[0] == c[0] && m[1] == c[0]) {
+    if (mz[m[0]][m[1]] == 'C') {
         if (mvs < s) {
-            copy(mz, mz+12, p.begin());
+            copy(mz, mz+12, p);
             s = mvs;
         }
-        cout << "SOLVED" << endl;
     } else {
         if (mz[m[0]][m[1]] == ' ')
             mz[m[0]][m[1]] = '+';
         if (mz[m[0]+1][m[1]] == ' ' || mz[m[0]+1][m[1]] == 'C') {
-            cout << "down" << endl;
             m[0] ++;
-            solve(mz, m, c, p, mvs+1, s);
+            solve(mz, m, p, mvs+1, s);
             m[0] --;
         }
         if (mz[m[0]-1][m[1]] == ' ' || mz[m[0]-1][m[1]] == 'C') {
-            cout << "up" << endl;
             m[0] --;
-            solve(mz, m, c, p, mvs+1, s);
+            solve(mz, m, p, mvs+1, s);
             m[0] ++;
         }
         if (mz[m[0]][m[1]+1] == ' ' || mz[m[0]][m[1]+1] == 'C') {
-            cout << "right" << endl;
             m[1] ++;
-            solve(mz, m, c, p, mvs+1, s);
+            solve(mz, m, p, mvs+1, s);
             m[1] --;
         }
         if (mz[m[0]][m[1]-1] == ' ' || mz[m[0]][m[1]-1] == 'C') {
-            cout << "left" << endl;
             m[1] --;
-            solve(mz, m, c, p, mvs+1, s);
+            solve(mz, m, p, mvs+1, s);
             m[1] ++;
         }
-        //cout << "DONE";
-        /*cout << mz[m[0]+1][m[1]] << endl;
-        cout << mz[m[0]-1][m[1]] << endl;
-        cout << mz[m[0]][m[1]+1] << endl;
-        cout << mz[m[0]][m[1]-1] << endl;
-        cout << m[0] << m[1];*/
     }
 }
 
@@ -74,10 +63,8 @@ int main ()
     mazeV[mouse[0]][mouse[1]] = 'M';
 
     do {
-        /*cheese[0] = rand()%12;
-        cheese[1] = rand()%12;*/
-        cheese[0] = mouse[0] + 1;
-        cheese[1] = mouse[1];
+        cheese[0] = rand()%12;
+        cheese[1] = rand()%12;
     } while (mazeV[cheese[0]][cheese[1]] != ' ');
     mazeV[cheese[0]][cheese[1]] = 'C';
 
@@ -85,16 +72,17 @@ int main ()
         printf("%s\n", mazeV[i].c_str());
     }
 
-    string maze[mazeV.size()];
+    string maze[12];
     copy(mazeV.begin(), mazeV.end(), maze);
-    vector<string> path;
+    string path[12];
     int shortest = 100;
-    solve(maze, mouse, cheese, path, 0, shortest);
+    solve(maze, mouse, path, 0, shortest);
 
     printf("\n");
     for (int i = 0; i < 12; i ++) {
         printf("%s\n", path[i].c_str());
     }
+    printf("Shortest Path: %i\n", shortest);
 }
 
 /*
