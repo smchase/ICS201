@@ -2,8 +2,9 @@
 
 using namespace std;
 
-void add (int n1, int n2, int t =  0) {
-    if (n1 <= n2) add (n1 + 1, n2, t + n1);
+void add (int n1, int n2, int t =  0)
+{
+    if (n1 <= n2) add(n1+1, n2, t+n1);
     else cout << t << endl;
 }
 
