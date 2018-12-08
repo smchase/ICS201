@@ -1,0 +1,3 @@
+minesweeper
+battleship
+card game (blackjack, poker)
