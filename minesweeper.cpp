@@ -2,54 +2,110 @@
 // by Simon Chase
 
 #include <iostream>
-#include <string>
 #include <array>
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
+#include <string>
 
 using namespace std;
 
-int main ()
+// check if input is proper
+bool goodIn (string in)
 {
-    array<string, 9> base;
-    base.fill("         ");
-    array<string, 9> open;
-    open.fill("+++++++++");
+    return in.length() == 2 && in[0] >= 65 && in[0] <= 73 && in[1] >= 49 && in[1] <= 57;
+}
 
-    srand(time(NULL));
-    int x, y;
-    for (int i = 0; i < 10; i ++) {
-        do {
-            x = rand() % 9;
-            y = rand() % 9;
-        } while (base[y][x] == '*');
-        base[y][x] = '*';
+// recursive function for oppening spaces
+void openSpaces (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, array<int, 2> pos)
+{
+    open[pos[0]][pos[1]] = true;
+    if (pos[0] < 8 && base[pos[0]+1][pos[1]] == ' ') openSpaces(base, open, {pos[0]+1, pos[1]});
+    if (pos[0] > 0 && base[pos[0]-1][pos[1]] == ' ') openSpaces(base, open, {pos[0]-1, pos[1]});
+    if (pos[1] < 8 && base[pos[0]][pos[1]+1] == ' ') openSpaces(base, open, {pos[0], pos[1]+1});
+    if (pos[1] > 0 && base[pos[0]][pos[1]-1] == ' ') openSpaces(base, open, {pos[0], pos[1]-1});
+    if (pos[0] < 8 && pos[1] < 8 && base[pos[0]+1][pos[1]+1] == ' ') openSpaces(base, open, {pos[0]+1, pos[1]+1});
+    if (pos[0] > 0 && pos[1] > 0 && base[pos[0]-1][pos[1]-1] == ' ') openSpaces(base, open, {pos[0]-1, pos[1]-1});
+    if (pos[0] > 0 && pos[1] < 8 && base[pos[0]-1][pos[1]+1] == ' ') openSpaces(base, open, {pos[0]-1, pos[1]+1});
+    if (pos[0] < 8 && pos[1] > 0 && base[pos[0]+1][pos[1]-1] == ' ') openSpaces(base, open, {pos[0]+1, pos[1]-1});
+}
+
+
+// recursive play function
+void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int moves = 0)
+{
+    // display grid
+    printf("\n\n\n  ");
+    for (int i = 0; i < 9; i ++) {
+        printf("%c ", 65+i);
+    }
+    for (int i = 0; i < 9; i ++) {
+        printf("\n%i ", i+1);
+        for (int j = 0; j < 9; j ++)  {
+            printf("%c ", open[i][j] ? base[i][j] : '+');
+        }
+    }
+    printf("\n");
+
+    // check win or lose, if so return
+    if (moves == -1) {
+        printf("\nYou Lose!\n");
+        return;
+    } if (moves == 71) {
+        printf("\nYou Win!\n");
+        return;
     }
 
+    // take and check input
+    string in;
+    array<int, 2> pos;
+    do {
+        printf("\nPick a coordinate (ex. A5): ");
+        cin >> in;
+    } while (!goodIn(in) || open[in[1]-'0'-1][(int)in[0]-65]);
+    pos = {in[1]-'0'-1, (int)in[0]-65};
+
+    // open spaces with recursion, check if mine is hit (if so make moves negative), continue with recursion
+    openSpaces(base, open, pos);
+    if (base[pos[0]][pos[1]] == '*') moves = -2;
+    play(base, open, moves+1);
+}
+
+int main ()
+{
+    // create and fill base and open arrays
+    array<array<char, 9>, 9> base;
+    for (int i = 0; i < 9; i ++) base[i].fill(' ');
+    array<array<bool, 9>, 9> open;
+    for (int i = 0; i < 9; i ++) open[i].fill(false);
+
+    // generate mines in base
+    srand(time(NULL));
+    array<int, 2> pos;
+    for (int i = 0; i < 10; i ++) {
+        do pos = {rand() % 9, rand() % 9};
+        while (base[pos[0]][pos[1]] == '*');
+        base[pos[0]][pos[1]] = '*';
+    }
+
+    // generate numbers for base
     int n;
     for (int i = 0; i < 9; i ++) {
         for (int j = 0; j < 9; j ++) {
             n = 0;
-            if (base[i+1][j] == '*') n ++;
-            if (base[i-1][j] == '*') n ++;
-            if (base[i][j+1] == '*') n ++;
-            if (base[i][j-1] == '*') n ++;
-            if (base[i+1][j+1] == '*') n ++;
-            if (base[i-1][j-1] == '*') n ++;
-            if (base[i-1][j+1] == '*') n ++;
-            if (base[i+1][j-1] == '*') n ++;
+            if (i < 8 && base[i+1][j] == '*') n ++;
+            if (i > 0 && base[i-1][j] == '*') n ++;
+            if (j < 8 && base[i][j+1] == '*') n ++;
+            if (j > 0 && base[i][j-1] == '*') n ++;
+            if (i < 8 && j < 8 && base[i+1][j+1] == '*') n ++;
+            if (i > 0 && j > 0 && base[i-1][j-1] == '*') n ++;
+            if (i > 0 && j < 8 && base[i-1][j+1] == '*') n ++;
+            if (i < 8 && j > 0 && base[i+1][j-1] == '*') n ++;
             if (n != 0 && base[i][j] != '*') base[i][j] = n+'0';
         }
     }
 
-    for (int i = 0; i < 10; i ++) {
-        if (i == 0) cout << "  ";
-        else cout << i << " ";
-        for (int j = 0; j < 9; j ++) {
-            if (i == 0) cout << (char)(65+j) << " ";
-            else cout << base[i-1][j] << " ";
-        }
-        cout << endl;
-    }
+    // title and game
+    printf(" __  __ _____ _   _ ______  _______          ________ ______ _____  ______ _____\n|  \\/  |_   _| \\ | |  ____|/ ____\\ \\        / /  ____|  ____|  __ \\|  ____|  __ \\ \n| \\  / | | | |  \\| | |__  | (___  \\ \\  /\\  / /| |__  | |__  | |__) | |__  | |__) |\n| |\\/| | | | | . ` |  __|  \\___ \\  \\ \\/  \\/ / |  __| |  __| |  ___/|  __| |  _  / \n| |  | |_| |_| |\\  | |____ ____) |  \\  /\\  /  | |____| |____| |    | |____| | \\ \\ \n|_|  |_|_____|_| \\_|______|_____/    \\/  \\/   |______|______|_|    |______|_|  \\_\\\n\nby Simon Chase\n");
+    play(base, open);
 }
