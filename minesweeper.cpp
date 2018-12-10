@@ -53,8 +53,8 @@ void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int m
     string in;
     array<int, 2> pos;
     do {
-        printf("\nPick a coordinate (ex. A5): ");
-        cin >> in;
+        printf("\nEnter a coordinate (ex. A5): ");
+        getline(cin, in);
     } while (!goodIn(in) || open[in[1]-'0'-1][(int)in[0]-65]);
     pos = {in[1]-'0'-1, (int)in[0]-65};
 
