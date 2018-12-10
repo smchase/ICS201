@@ -20,14 +20,16 @@ bool goodIn (string in)
 void openSpaces (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, array<int, 2> pos)
 {
     open[pos[0]][pos[1]] = true;
-    if (pos[0] < 8 && base[pos[0]+1][pos[1]] == ' ') openSpaces(base, open, {pos[0]+1, pos[1]});
-    if (pos[0] > 0 && base[pos[0]-1][pos[1]] == ' ') openSpaces(base, open, {pos[0]-1, pos[1]});
-    if (pos[1] < 8 && base[pos[0]][pos[1]+1] == ' ') openSpaces(base, open, {pos[0], pos[1]+1});
-    if (pos[1] > 0 && base[pos[0]][pos[1]-1] == ' ') openSpaces(base, open, {pos[0], pos[1]-1});
-    if (pos[0] < 8 && pos[1] < 8 && base[pos[0]+1][pos[1]+1] == ' ') openSpaces(base, open, {pos[0]+1, pos[1]+1});
-    if (pos[0] > 0 && pos[1] > 0 && base[pos[0]-1][pos[1]-1] == ' ') openSpaces(base, open, {pos[0]-1, pos[1]-1});
-    if (pos[0] > 0 && pos[1] < 8 && base[pos[0]-1][pos[1]+1] == ' ') openSpaces(base, open, {pos[0]-1, pos[1]+1});
-    if (pos[0] < 8 && pos[1] > 0 && base[pos[0]+1][pos[1]-1] == ' ') openSpaces(base, open, {pos[0]+1, pos[1]-1});
+    if (base[pos[0]][pos[1]] == ' ') {
+        if (pos[0] < 8) openSpaces(base, open, {pos[0]+1, pos[1]});
+        if (pos[0] > 0) openSpaces(base, open, {pos[0]-1, pos[1]});
+        if (pos[1] < 8) openSpaces(base, open, {pos[0], pos[1]+1});
+        if (pos[1] > 0) openSpaces(base, open, {pos[0], pos[1]-1});
+        if (pos[0] < 8 && pos[1] < 8) openSpaces(base, open, {pos[0]+1, pos[1]+1});
+        if (pos[0] > 0 && pos[1] > 0) openSpaces(base, open, {pos[0]-1, pos[1]-1});
+        if (pos[0] > 0 && pos[1] < 8) openSpaces(base, open, {pos[0]-1, pos[1]+1});
+        if (pos[0] < 8 && pos[1] > 0) openSpaces(base, open, {pos[0]+1, pos[1]-1});
+    }
 }
 
 
