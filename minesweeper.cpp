@@ -21,14 +21,14 @@ void openSpaces (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open,
 {
     open[pos[0]][pos[1]] = true;
     if (base[pos[0]][pos[1]] == ' ') {
-        if (pos[0] < 8) openSpaces(base, open, {pos[0]+1, pos[1]});
-        if (pos[0] > 0) openSpaces(base, open, {pos[0]-1, pos[1]});
-        if (pos[1] < 8) openSpaces(base, open, {pos[0], pos[1]+1});
-        if (pos[1] > 0) openSpaces(base, open, {pos[0], pos[1]-1});
-        if (pos[0] < 8 && pos[1] < 8) openSpaces(base, open, {pos[0]+1, pos[1]+1});
-        if (pos[0] > 0 && pos[1] > 0) openSpaces(base, open, {pos[0]-1, pos[1]-1});
-        if (pos[0] > 0 && pos[1] < 8) openSpaces(base, open, {pos[0]-1, pos[1]+1});
-        if (pos[0] < 8 && pos[1] > 0) openSpaces(base, open, {pos[0]+1, pos[1]-1});
+        if (pos[0] < 8 && !open[pos[0]+1][pos[1]]) openSpaces(base, open, {pos[0]+1, pos[1]});
+        if (pos[0] > 0 && !open[pos[0]-1][pos[1]]) openSpaces(base, open, {pos[0]-1, pos[1]});
+        if (pos[1] < 8 && !open[pos[0]][pos[1]+1]) openSpaces(base, open, {pos[0], pos[1]+1});
+        if (pos[1] > 0 && !open[pos[0]][pos[1]-1]) openSpaces(base, open, {pos[0], pos[1]-1});
+        if (pos[0] < 8 && pos[1] < 8 && !open[pos[0]+1][pos[1]+1]) openSpaces(base, open, {pos[0]+1, pos[1]+1});
+        if (pos[0] > 0 && pos[1] > 0 && !open[pos[0]-1][pos[1]-1]) openSpaces(base, open, {pos[0]-1, pos[1]-1});
+        if (pos[0] > 0 && pos[1] < 8 && !open[pos[0]-1][pos[1]+1]) openSpaces(base, open, {pos[0]-1, pos[1]+1});
+        if (pos[0] < 8 && pos[1] > 0 && !open[pos[0]+1][pos[1]-1]) openSpaces(base, open, {pos[0]+1, pos[1]-1});
     }
 }
 
@@ -37,7 +37,7 @@ void openSpaces (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open,
 void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int moves = 0)
 {
     // display grid
-    printf("\n\n\n  ");
+    for (int i = 0; i < 30; i ++) printf("\n  ");
     for (int i = 0; i < 9; i ++) {
         printf("%c ", 65+i);
     }
@@ -49,15 +49,6 @@ void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int m
     }
     printf("\n");
 
-    // check win or lose, if so return
-    if (moves == -1) {
-        printf("\nYou Lose!\n");
-        return;
-    } if (moves == 71) {
-        printf("\nYou Win!\n");
-        return;
-    }
-
     // take and check input
     string in;
     array<int, 2> pos;
@@ -67,10 +58,35 @@ void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int m
     } while (!goodIn(in) || open[in[1]-'0'-1][(int)in[0]-65]);
     pos = {in[1]-'0'-1, (int)in[0]-65};
 
-    // open spaces with recursion, check if mine is hit (if so make moves negative), continue with recursion
+    // open spaces with recursion, check win or lose, if not continue with recursion
     openSpaces(base, open, pos);
-    if (base[pos[0]][pos[1]] == '*') moves = -2;
-    play(base, open, moves+1);
+    if (base[pos[0]][pos[1]] == '*') {
+        for (int i = 0; i < 30; i ++) printf("\n  ");
+        for (int i = 0; i < 9; i ++) {
+            printf("%c ", 65+i);
+        }
+        for (int i = 0; i < 9; i ++) {
+            printf("\n%i ", i+1);
+            for (int j = 0; j < 9; j ++)  {
+                printf("%c ", base[i][j]);
+            }
+        }
+        printf("\n\nYou Lose!\n");
+    } else if (moves == 70) {
+        for (int i = 0; i < 30; i ++) printf("\n  ");
+        for (int i = 0; i < 9; i ++) {
+            printf("%c ", 65+i);
+        }
+        for (int i = 0; i < 9; i ++) {
+            printf("\n%i ", i+1);
+            for (int j = 0; j < 9; j ++)  {
+                printf("%c ", open[i][j] ? base[i][j] : '+');
+            }
+        }
+        printf("\n\nYou Win!\n");
+    } else {
+        play(base, open, moves+1);
+    }
 }
 
 int main ()
@@ -108,6 +124,7 @@ int main ()
     }
 
     // title and game
-    printf(" __  __ _____ _   _ ______  _______          ________ ______ _____  ______ _____\n|  \\/  |_   _| \\ | |  ____|/ ____\\ \\        / /  ____|  ____|  __ \\|  ____|  __ \\ \n| \\  / | | | |  \\| | |__  | (___  \\ \\  /\\  / /| |__  | |__  | |__) | |__  | |__) |\n| |\\/| | | | | . ` |  __|  \\___ \\  \\ \\/  \\/ / |  __| |  __| |  ___/|  __| |  _  / \n| |  | |_| |_| |\\  | |____ ____) |  \\  /\\  /  | |____| |____| |    | |____| | \\ \\ \n|_|  |_|_____|_| \\_|______|_____/    \\/  \\/   |______|______|_|    |______|_|  \\_\\\n\nby Simon Chase\n");
+    printf("  __  __ _____ _   _ ______  _______          ________ ______ _____  ______ _____\n|  \\/  |_   _| \\ | |  ____|/ ____\\ \\        / /  ____|  ____|  __ \\|  ____|  __ \\ \n| \\  / | | | |  \\| | |__  | (___  \\ \\  /\\  / /| |__  | |__  | |__) | |__  | |__) |\n| |\\/| | | | | . ` |  __|  \\___ \\  \\ \\/  \\/ / |  __| |  __| |  ___/|  __| |  _  / \n| |  | |_| |_| |\\  | |____ ____) |  \\  /\\  /  | |____| |____| |    | |____| | \\ \\ \n|_|  |_|_____|_| \\_|______|_____/    \\/  \\/   |______|______|_|    |______|_|  \\_\\\n\nPress ENTER to play...");
+    cin.ignore();
     play(base, open);
 }
