@@ -1,5 +1,5 @@
-// Minesweeper
-// by Simon Chase
+// minesweeper
+// by simonn chase
 
 #include <iostream>
 #include <array>
