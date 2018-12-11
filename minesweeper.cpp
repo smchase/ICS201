@@ -17,18 +17,19 @@ bool goodIn (string in)
 }
 
 // recursive function for oppening spaces
-void openSpaces (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, array<int, 2> pos)
+void openSpaces (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, array<int, 2> pos, int &moves)
 {
     open[pos[0]][pos[1]] = true;
+    moves ++;
     if (base[pos[0]][pos[1]] == ' ') {
-        if (pos[0] < 8 && !open[pos[0]+1][pos[1]]) openSpaces(base, open, {pos[0]+1, pos[1]});
-        if (pos[0] > 0 && !open[pos[0]-1][pos[1]]) openSpaces(base, open, {pos[0]-1, pos[1]});
-        if (pos[1] < 8 && !open[pos[0]][pos[1]+1]) openSpaces(base, open, {pos[0], pos[1]+1});
-        if (pos[1] > 0 && !open[pos[0]][pos[1]-1]) openSpaces(base, open, {pos[0], pos[1]-1});
-        if (pos[0] < 8 && pos[1] < 8 && !open[pos[0]+1][pos[1]+1]) openSpaces(base, open, {pos[0]+1, pos[1]+1});
-        if (pos[0] > 0 && pos[1] > 0 && !open[pos[0]-1][pos[1]-1]) openSpaces(base, open, {pos[0]-1, pos[1]-1});
-        if (pos[0] > 0 && pos[1] < 8 && !open[pos[0]-1][pos[1]+1]) openSpaces(base, open, {pos[0]-1, pos[1]+1});
-        if (pos[0] < 8 && pos[1] > 0 && !open[pos[0]+1][pos[1]-1]) openSpaces(base, open, {pos[0]+1, pos[1]-1});
+        if (pos[0] < 8 && !open[pos[0]+1][pos[1]]) openSpaces(base, open, {pos[0]+1, pos[1]}, moves);
+        if (pos[0] > 0 && !open[pos[0]-1][pos[1]]) openSpaces(base, open, {pos[0]-1, pos[1]}, moves);
+        if (pos[1] < 8 && !open[pos[0]][pos[1]+1]) openSpaces(base, open, {pos[0], pos[1]+1}, moves);
+        if (pos[1] > 0 && !open[pos[0]][pos[1]-1]) openSpaces(base, open, {pos[0], pos[1]-1}, moves);
+        if (pos[0] < 8 && pos[1] < 8 && !open[pos[0]+1][pos[1]+1]) openSpaces(base, open, {pos[0]+1, pos[1]+1}, moves);
+        if (pos[0] > 0 && pos[1] > 0 && !open[pos[0]-1][pos[1]-1]) openSpaces(base, open, {pos[0]-1, pos[1]-1}, moves);
+        if (pos[0] > 0 && pos[1] < 8 && !open[pos[0]-1][pos[1]+1]) openSpaces(base, open, {pos[0]-1, pos[1]+1}, moves);
+        if (pos[0] < 8 && pos[1] > 0 && !open[pos[0]+1][pos[1]-1]) openSpaces(base, open, {pos[0]+1, pos[1]-1}, moves);
     }
 }
 
@@ -59,7 +60,7 @@ void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int m
     pos = {in[1]-'0'-1, (int)in[0]-65};
 
     // open spaces with recursion, check win or lose, if not continue with recursion
-    openSpaces(base, open, pos);
+    openSpaces(base, open, pos, moves);
     if (base[pos[0]][pos[1]] == '*') {
         for (int i = 0; i < 30; i ++) printf("\n  ");
         for (int i = 0; i < 9; i ++) {
@@ -72,7 +73,7 @@ void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int m
             }
         }
         printf("\n\nYou Lose!\n");
-    } else if (moves == 70) {
+    } else if (moves == 71) {
         for (int i = 0; i < 30; i ++) printf("\n  ");
         for (int i = 0; i < 9; i ++) {
             printf("%c ", 65+i);
@@ -85,7 +86,7 @@ void play (array<array<char, 9>, 9> &base, array<array<bool, 9>, 9> &open, int m
         }
         printf("\n\nYou Win!\n");
     } else {
-        play(base, open, moves+1);
+        play(base, open, moves);
     }
 }
 
