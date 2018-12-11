@@ -1,11 +1,11 @@
 // some basic rpg
 // by simon chase
 
-#include <iostream>
-
-using namespace std;
+#include "menu.h"
+#include "game.h"
 
 int main ()
 {
-
+    menu();
+    game();
 }
