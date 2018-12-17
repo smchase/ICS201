@@ -3,6 +3,8 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <random>
+#include <chrono>
 
 using namespace std;
 
@@ -30,33 +32,35 @@ int main ()
 
     vector<int> options;
     array<array<int, 2>, 8> pos = {{{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}, {2, 0}, {2, 1}}};
-    for (int i = 0; i < 9; i ++) {
-        for (int j = 0; j < 9; j ++) {
-            resetOptions(options);
 
-            for (int k = 0; k < i; k ++) {
-                checkClear(options, grid[k][j]);
-            }
+    bool run = true;
+    while (run) {
+        run = false;
+        minstd_rand0 seed (chrono::system_clock::now().time_since_epoch().count());
+        for (int i = 0; i < 9; i ++) {
+            for (int j = 0; j < 9; j ++) {
+                resetOptions(options);
 
-            for (int k = 0; k < j; k ++) {
-                checkClear(options, grid[i][k]);
-            }
+                for (int k = 0; k < i; k ++) {
+                    checkClear(options, grid[k][j]);
+                }
 
-            for (int k = 0; k < ((i%3)*3)+(j%3); k ++) {
-                //checkClear(options, grid[i/3+pos[k][0]][j/3+pos[k][1]]);
-            }
+                for (int k = 0; k < j; k ++) {
+                    checkClear(options, grid[i][k]);
+                }
 
-            if (options.size() == 0) {
-                cout << " ";
-            } else {
-                random_shuffle(options.begin(), options.end());
-                grid[i][j] = options[0];
+                for (int k = 0; k < ((i%3)*3)+(j%3); k ++) {
+                    checkClear(options, grid[i/3+pos[k][0]][j/3+pos[k][1]]);
+                }
 
-                cout << grid[i][j];
-                file << grid[i][j];
+                if (options.size() == 0) {
+                    run = true;
+                } else {
+                    shuffle(options.begin(), options.end(), seed);
+                    grid[i][j] = options[0];
+                }
             }
         }
-        cout << endl;
-        file << endl;
     }
+    cout << "Done!";
 }
