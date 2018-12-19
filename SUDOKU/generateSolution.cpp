@@ -55,8 +55,8 @@ int main ()
 
     for (int i = 0; i < 9; i ++) {
         for (int j = 0; j < 9; j ++) {
-            cout << options[i][j][0];
-            file << options[i][j][0];
+            cout << options[i][j][0] << " ";
+            file << options[i][j][0] << " ";
         }
         cout << endl;
         file << endl;
