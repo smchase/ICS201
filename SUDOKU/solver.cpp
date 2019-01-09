@@ -25,7 +25,7 @@ struct node {
     node *right;
     node *header;
     int num;
-    array<int, 2> pos;
+    array<int, 2> pos; // row, column
 };
 
 struct node2d {
@@ -40,27 +40,27 @@ int main () {
 
     for (int i = 0; i < 9*9*9; i ++) {
         matrix2d[i][i/9] = {true, &matrix[it]};
+        matrix[it].num = (i%9)+1;
+        matrix[it].pos = {i/81, (i/9)%9};
         it ++;
 
-        matrix2d[i][(9*9)+(i%9)+(((i/9)%9)*9)] = {true, &matrix[it]};
+        matrix2d[i][(9*9)+(i%9)+((i/81)*9)] = {true, &matrix[it]};
+        matrix[it].num = (i%9)+1;
+        matrix[it].pos = {i/81, (i/9)%9};
         it ++;
 
         matrix2d[i][(9*9*2)+(i%81)] = {true, &matrix[it]};
+        matrix[it].num = (i%9)+1;
+        matrix[it].pos = {i/81, (i/9)%9};
         it ++;
 
-        /*matrix2d[i][(9*9*3)+(i%9)] = {true, &matrix[it]};
-        it ++;*/
+        matrix2d[i][(9*9*3)+(i%9)+(((i%(9*9))/(9*3))*9)+((i/(9*9*3))*9*3)] = {true, &matrix[it]}; // god this took torever
+        matrix[it].num = (i%9)+1;
+        matrix[it].pos = {i/81, (i/9)%9};
+        it ++;
     }
 
-    cout << "made it this far!";
+    cout << "created 2d matrix!" << endl;
 
-    fstream file("H:\\Documents\\Assignments\\SUDOKU\\binary.txt", ios::out | ios::trunc);
-    for (int i = 0; i < matrix2d.size(); i ++) {
-        for (int j = 0; j < matrix2d[i].size(); j ++) {
-            file << (matrix2d[i][j].filled ? "#" : " ");
-        }
-        file << endl;
-    }
-
-    cout << "finished!";
+    cout << "finished!" << endl;
 }
