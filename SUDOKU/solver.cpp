@@ -29,15 +29,38 @@ struct node {
 };
 
 struct node2d {
-    bool filled;
+    bool filled = false;
     node *pointer;
 };
 
 int main () {
     array<array<node2d, 9*9*4>, 9*9*9> matrix2d;
     array<node, 9*9*9*4> matrix;
+    int it = 0;
 
     for (int i = 0; i < 9*9*9; i ++) {
-        
+        matrix2d[i][i/9] = {true, &matrix[it]};
+        it ++;
+
+        matrix2d[i][(9*9)+(i%9)+(((i/9)%9)*9)] = {true, &matrix[it]};
+        it ++;
+
+        matrix2d[i][(9*9*2)+(i%81)] = {true, &matrix[it]};
+        it ++;
+
+        /*matrix2d[i][(9*9*3)+(i%9)] = {true, &matrix[it]};
+        it ++;*/
     }
+
+    cout << "made it this far!";
+
+    fstream file("H:\\Documents\\Assignments\\SUDOKU\\binary.txt", ios::out | ios::trunc);
+    for (int i = 0; i < matrix2d.size(); i ++) {
+        for (int j = 0; j < matrix2d[i].size(); j ++) {
+            file << (matrix2d[i][j].filled ? "#" : " ");
+        }
+        file << endl;
+    }
+
+    cout << "finished!";
 }
