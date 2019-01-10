@@ -1,14 +1,12 @@
 /*
-Sudoku solver using dancing links
-Dancing links paper: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
-Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
+SUDOKU SOLVER USING DANCING LINKS
+Essentially, the way this solver works is it translates the sudoku puzzle to a binary matrix. The rows represent options (ex. a 9 at row 3 and column 7), and the columns represent constraints (ex. there needs to be a 2 in row 5). This is an example of an exact cover problem, where you must find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
 
 Steps:
-1. Read sudoku problem from problem.txt.
-2. Create matrix using 2d arrays with pointers to nodes in another array.
-3. Add header nodes to other array.
-4. Set the parameters of the body nodes using the 2d matrix.
-5. Add rows satisfied by the numbers in problem.txt to solution.
+1.
+
+Dancing links paper: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
+Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
 */
 
 #include <iostream>
