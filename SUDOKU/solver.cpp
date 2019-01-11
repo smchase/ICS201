@@ -1,6 +1,6 @@
 /*
 SUDOKU SOLVER USING DANCING LINKS
-Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and column 7), and the columns represent constraints (ex. there needs to be a 2 in row 5). All of the numbers given by the puzzle are added to the solution, and the remaining matrix is an example of an exact cover problem, where you must find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
+Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and column 7), and the columns represent constraints (ex. there needs to be a 2 in row 5). This matrix is an example of an exact cover problem, where you must find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
 
 Steps:
 1.
@@ -39,15 +39,38 @@ void cover (node &column) {
     node *n2;
     int i = 0;
     do {
-        cout << i << endl;
-        i ++;
         n1 = n1->down;
+        n1->left->right = n1->right;
+        n1->right->left = n1->left;
+
         n2 = n1;
         do {
             n2 = n2->right;
-
-        } while (n2 != n1.left);
+            n2->up->down = n2->down;
+            n2->down->up = n2->up;
+        } while (n2 != n1->left);
     } while (n1 != column.up);
+}
+
+void uncover (node &column) {
+    column.left->right = &column;
+    column.right->left = &column;
+
+    node *n1 = &column;
+    node *n2;
+    int i = 0;
+    do {
+        n1 = n1->up;
+        n1->left->right = n1;
+        n1->right->left = n1;
+
+        n2 = n1;
+        do {
+            n2 = n2->left;
+            n2->up->down = n2;
+            n2->down->up = n2;
+        } while (n2 != n1->right);
+    } while (n1 != column.down);
 }
 
 int main () {
@@ -142,8 +165,6 @@ int main () {
         }
     }
     cout << "filled body pointers" << endl;
-
-    cover(matrix[1]);
 
     cout << "finished!" << endl;
 }
