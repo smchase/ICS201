@@ -1,6 +1,6 @@
 /*
 SUDOKU SOLVER USING DANCING LINKS
-Essentially, the way this solver works is it translates the sudoku puzzle to a binary matrix. The rows represent options (ex. a 9 at row 3 and column 7), and the columns represent constraints (ex. there needs to be a 2 in row 5). This is an example of an exact cover problem, where you must find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
+Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and column 7), and the columns represent constraints (ex. there needs to be a 2 in row 5). All of the numbers given by the puzzle are added to the solution, and the remaining matrix is an example of an exact cover problem, where you must find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
 
 Steps:
 1.
@@ -30,6 +30,25 @@ struct node2d {
     bool filled = false;
     node *pointer;
 };
+
+void cover (node &column) {
+    column.left->right = column.right;
+    column.right->left = column.left;
+
+    node *n1 = &column;
+    node *n2;
+    int i = 0;
+    do {
+        cout << i << endl;
+        i ++;
+        n1 = n1->down;
+        n2 = n1;
+        do {
+            n2 = n2->right;
+
+        } while (n2 != n1.left);
+    } while (n1 != column.up);
+}
 
 int main () {
     array<array<node2d, 9*9*4>, 9*9*9> matrix2d;
@@ -78,7 +97,7 @@ int main () {
 
                 // up
                 for (int n = i; n >= 0; n --) {
-                    if (matrix2d[n][j].filled) {
+                    if (matrix2d[n][j].filled && n != i) {
                         matrix2d[i][j].pointer->up = matrix2d[n][j].pointer;
                         break;
                     } else if (n == 0) {
@@ -89,7 +108,7 @@ int main () {
 
                 // down
                 for (int n = i; n < 9*9*9; n ++) {
-                    if (matrix2d[n][j].filled) {
+                    if (matrix2d[n][j].filled && n != i) {
                         matrix2d[i][j].pointer->down = matrix2d[n][j].pointer;
                         break;
                     } else if (n+1 == 9*9*9) {
@@ -101,7 +120,7 @@ int main () {
                 // left
                 node *leftNode;
                 for (int n = j; n >= 0; n --) {
-                    if (matrix2d[i][n].filled) {
+                    if (matrix2d[i][n].filled && n != j) {
                         matrix2d[i][j].pointer->left = matrix2d[i][n].pointer;
                         break;
                     } else if (n == 0) {
@@ -111,7 +130,7 @@ int main () {
 
                 // right
                 for (int n = j; n < 9*9*4; n ++) {
-                    if (matrix2d[i][n].filled) {
+                    if (matrix2d[i][n].filled && n != j) {
                         matrix2d[i][j].pointer->right = matrix2d[i][n].pointer;
                         break;
                     } else if (n+1 == 9*9*4) {
@@ -124,12 +143,7 @@ int main () {
     }
     cout << "filled body pointers" << endl;
 
-    /*
-    node *n = &matrix[0];
-    do {
-        n = n->right;
-    } while (n != &matrix[0]);
-    */
+    cover(matrix[1]);
 
     cout << "finished!" << endl;
 }
