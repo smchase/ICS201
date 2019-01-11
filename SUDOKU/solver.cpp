@@ -35,42 +35,24 @@ void cover (node &column) {
     column.left->right = column.right;
     column.right->left = column.left;
 
-    node *n1 = &column;
-    node *n2;
-    int i = 0;
-    do {
-        n1 = n1->down;
-        n1->left->right = n1->right;
-        n1->right->left = n1->left;
-
-        n2 = n1;
-        do {
-            n2 = n2->right;
+    for (node *n1 = column.down; n1 != &column; n1 = n1->down) {
+        for (node *n2 = n1->right; n2 != n1; n2 = n2->right) {
             n2->up->down = n2->down;
             n2->down->up = n2->up;
-        } while (n2 != n1->left);
-    } while (n1 != column.up);
+        }
+    }
 }
 
 void uncover (node &column) {
     column.left->right = &column;
     column.right->left = &column;
 
-    node *n1 = &column;
-    node *n2;
-    int i = 0;
-    do {
-        n1 = n1->up;
-        n1->left->right = n1;
-        n1->right->left = n1;
-
-        n2 = n1;
-        do {
-            n2 = n2->left;
+    for (node *n1 = column.up; n1 != &column; n1 = n1->up) {
+        for (node *n2 = n1->left; n2 != n1; n2 = n2->left) {
             n2->up->down = n2;
             n2->down->up = n2;
-        } while (n2 != n1->right);
-    } while (n1 != column.down);
+        }
+    }
 }
 
 int main () {
@@ -109,7 +91,7 @@ int main () {
         matrix[i-1].right = &matrix[i];
     }
     matrix[9*9*4].right = &matrix[0];
-    cout << "created headers" << endl;
+    cout << "created list headers" << endl;
 
     node *leftNode;
     for (int i = 0; i < 9*9*9; i ++) {
@@ -164,7 +146,32 @@ int main () {
             }
         }
     }
-    cout << "filled body pointers" << endl;
+    cout << "filled list body pointers" << endl;
+
+    array<array<int, 9>, 9> sudoku;
+    ifstream file("H:\\Documents\\Assignments\\SUDOKU\\problem.txt");
+    char n;
+    it = 0;
+    while (file.get(n)) {
+        if (n != '\n') {
+            sudoku[it/9][it%9] = n-48;
+            it ++;
+        }
+    }
+    cout << "read problem" << endl;
+
+    for (int i = 0; i < sudoku.size(); i ++) {
+        for (int j = 0; j < sudoku[i].size(); j ++) {
+            if (sudoku[i][j] != 0) {
+                for (int k = 0; k < matrix.size(); k ++) {
+                    if (matrix[k].num == sudoku[i][j] && matrix[k].pos[0] == i && matrix[k].pos[1] == j) {
+                        cover(*matrix[k].header);
+                    }
+                }
+            }
+        }
+    }
+    cout << "covered given numbers" << endl;
 
     cout << "finished!" << endl;
 }
