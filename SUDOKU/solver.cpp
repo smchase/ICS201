@@ -7,6 +7,9 @@ Steps:
 
 Dancing links paper: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
 Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
+
+TODO
+cin sudoku problem
 */
 
 #include <iostream>
@@ -29,6 +32,11 @@ struct node {
 struct node2d {
     bool filled = false;
     node *pointer;
+};
+
+struct solutionNum {
+    int num;
+    array<int, 2> pos; // row, column
 };
 
 void cover (node &column) {
@@ -55,9 +63,46 @@ void uncover (node &column) {
     }
 }
 
+array<array<node2d, 9*9*4>, 9*9*9> matrix2d;
+array<node, (10*9*9*4)+1> matrix;
+array<array<int, 9>, 9> sudoku;
+vector<solutionNum> solution;
+
+void solve () {
+    if (matrix[0].right == &matrix[0]) {
+        cout << "SOLUTION!" << endl;
+        return;
+    }
+
+    node *col;
+    int smallest = 9, size;
+    for (node *c = matrix[0].right; c != &matrix[0]; c = c->right) {
+        size = 0;
+        for (node *r = c->down; r != c; r = r->down) {
+            size ++;
+        }
+        if (size < smallest) {
+            smallest = size;
+            col = c;
+        }
+    }
+
+    for (node *r = col->down; r != col; r = r->down) {
+        for (node *c = r->right; c != r; c = c->right) {
+            cover(*c->header);
+        }
+        solution.push_back({r->num, {r->pos[0], r->pos[1]}});
+        solve();
+        for (node *c = r->left; c != r; c = c->left) {
+            uncover(*c->header);
+        }
+        solution.pop_back();
+    }
+
+    cout << "dead end" << endl;
+}
+
 int main () {
-    array<array<node2d, 9*9*4>, 9*9*9> matrix2d;
-    array<node, (10*9*9*4)+1> matrix;
     int it = (9*9*4)+1;
 
     for (int i = 0; i < 9*9*9; i ++) {
@@ -148,7 +193,6 @@ int main () {
     }
     cout << "filled list body pointers" << endl;
 
-    array<array<int, 9>, 9> sudoku;
     ifstream file("/Users/smchase/Documents/Assignments/SUDOKU/problem.txt");
     char n;
     it = 0;
@@ -173,6 +217,9 @@ int main () {
         }
     }
     cout << "covered given numbers" << endl;
+
+    cout << "solving..." << endl;
+    solve();
 
     cout << "finished!" << endl;
 }
