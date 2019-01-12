@@ -149,10 +149,11 @@ int main () {
     cout << "filled list body pointers" << endl;
 
     array<array<int, 9>, 9> sudoku;
-    ifstream file("H:\\Documents\\Assignments\\SUDOKU\\problem.txt");
+    ifstream file("/Users/smchase/Documents/Assignments/SUDOKU/problem.txt");
     char n;
     it = 0;
     while (file.get(n)) {
+        cout << (n == 48 ? ' ' : n);
         if (n != '\n') {
             sudoku[it/9][it%9] = n-48;
             it ++;
