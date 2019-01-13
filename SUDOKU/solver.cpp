@@ -1,6 +1,6 @@
 /*
 SUDOKU SOLVER USING DANCING LINKS
-Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and column 7), and the columns represent constraints (ex. there needs to be a 2 in row 5). This matrix is an example of an exact cover problem, where you must find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
+Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and col 7), and the cols represent constraints (ex. there needs to be a 2 in row 5). This matrix is an example of an exact cover problem, where you must find a combination of rows that satisfies each col exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
 
 Steps:
 1.
@@ -9,43 +9,43 @@ Dancing links paper: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011
 Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
 
 TODO
-cin sudoku problem
+cin sudoku problem & fix path
 clean code
 elegance
+generator
 */
 
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <array>
 
 using namespace std;
 
+// linked matrix node
 struct node {
     node *up;
     node *down;
     node *left;
     node *right;
     node *header;
+
     int num;
-    array<int, 2> pos; // row, column
+    int row;
+    int col;
 };
 
+// 2d matrix node
 struct node2d {
     bool filled = false;
     node *pointer;
 };
 
-struct solutionNum {
-    int num;
-    array<int, 2> pos; // row, column
-};
+// cover function
+void cover (node &col) {
+    col.left->right = col.right;
+    col.right->left = col.left;
 
-void cover (node &column) {
-    column.left->right = column.right;
-    column.right->left = column.left;
-
-    for (node *n1 = column.down; n1 != &column; n1 = n1->down) {
+    for (node *n1 = col.down; n1 != &col; n1 = n1->down) {
         for (node *n2 = n1->right; n2 != n1; n2 = n2->right) {
             n2->up->down = n2->down;
             n2->down->up = n2->up;
@@ -53,11 +53,12 @@ void cover (node &column) {
     }
 }
 
-void uncover (node &column) {
-    column.left->right = &column;
-    column.right->left = &column;
+// uncover function
+void uncover (node &col) {
+    col.left->right = &col;
+    col.right->left = &col;
 
-    for (node *n1 = column.up; n1 != &column; n1 = n1->up) {
+    for (node *n1 = col.up; n1 != &col; n1 = n1->up) {
         for (node *n2 = n1->left; n2 != n1; n2 = n2->left) {
             n2->up->down = n2;
             n2->down->up = n2;
@@ -65,17 +66,17 @@ void uncover (node &column) {
     }
 }
 
-array<array<node2d, 9*9*4>, 9*9*9> matrix2d;
+// linked matrix & sudoku grid & number of solutions (global for solve)
 array<node, (10*9*9*4)+1> matrix;
 array<array<int, 9>, 9> sudoku;
-vector<solutionNum> solution;
+int solutions = 0;
 
-void solve (int layer = 0) {
+// recursive solve function
+void solve () {
+    // if no columns remain uncovered print solution
     if (matrix[0].right == &matrix[0]) {
-        for (int i = 0; i < solution.size(); i ++) {
-            sudoku[solution[i].pos[0]][solution[i].pos[1]] = solution[i].num;
-        }
-        cout << endl;
+        solutions ++;
+        cout << endl << "SOLUTION " << solutions << endl;
         for (int i = 0; i < sudoku.size(); i ++) {
             for (int j = 0; j < sudoku[i].size(); j ++) {
                 cout << sudoku[i][j];
@@ -85,8 +86,9 @@ void solve (int layer = 0) {
         return;
     }
 
+    // find S heuristic (column with fewest nodes)
     node *col;
-    int smallest = 9, size;
+    int smallest = 10, size;
     for (node *c = matrix[0].right; c != &matrix[0]; c = c->right) {
         size = 0;
         for (node *r = c->down; r != c; r = r->down) {
@@ -98,46 +100,42 @@ void solve (int layer = 0) {
         }
     }
 
+    // go through column and cover each row in it one after another
     cover(*col);
     for (node *r = col->down; r != col; r = r->down) {
         for (node *c = r->right; c != r; c = c->right) {
             cover(*c->header);
         }
-        solution.push_back({r->num, {r->pos[0], r->pos[1]}});
-        solve(layer+1);
+        sudoku[r->row][r->col] = r->num;
+        // contine with the row as part of the solution
+        solve();
+        // after all possibilities with that row are explored, undo and try with the next row
         for (node *c = r->left; c != r; c = c->left) {
             uncover(*c->header);
         }
-        solution.pop_back();
     }
     uncover(*col);
 }
 
 int main () {
+    // create 2d matrix
+    array<array<node2d, 9*9*4>, 9*9*9> matrix2d;
     int it = (9*9*4)+1;
-
+    array<int, 4> arr;
     for (int i = 0; i < 9*9*9; i ++) {
-        matrix2d[i][i/9] = {true, &matrix[it]};
-        matrix[it].num = (i%9)+1;
-        matrix[it].pos = {i/81, (i/9)%9};
-        it ++;
+        arr = {i/9, (9*9)+(i%9)+((i/81)*9), (9*9*2)+(i%81), (9*9*3)+(i%9)+(((i%(9*9))/(9*3))*9)+((i/(9*9*3))*9*3)};
+        for (int j = 0; j < 4; j ++) {
+            matrix2d[i][arr[j]] = {true, &matrix[it]};
 
-        matrix2d[i][(9*9)+(i%9)+((i/81)*9)] = {true, &matrix[it]};
-        matrix[it].num = (i%9)+1;
-        matrix[it].pos = {i/81, (i/9)%9};
-        it ++;
-
-        matrix2d[i][(9*9*2)+(i%81)] = {true, &matrix[it]};
-        matrix[it].num = (i%9)+1;
-        matrix[it].pos = {i/81, (i/9)%9};
-        it ++;
-
-        matrix2d[i][(9*9*3)+(i%9)+(((i%(9*9))/(9*3))*9)+((i/(9*9*3))*9*3)] = {true, &matrix[it]}; // god this took torever
-        matrix[it].num = (i%9)+1;
-        matrix[it].pos = {i/81, (i/9)%9};
-        it ++;
+            // assign info to linked matrix nodes
+            matrix[it].num = (i%9)+1;
+            matrix[it].row = i/81;
+            matrix[it].col = (i/9)%9;
+            it ++;
+        }
     }
 
+    // create linked matrix headers
     matrix[0].left = &matrix[9*9*4];
     for (int i = 1; i < (9*9*4)+1; i ++) {
         matrix[i].up = &matrix[i];
@@ -147,6 +145,7 @@ int main () {
     }
     matrix[9*9*4].right = &matrix[0];
 
+    // assign linked matrix pointers based off of 2d matrix
     node *leftNode;
     for (int i = 0; i < 9*9*9; i ++) {
         for (int j = 0; j < 9*9*4; j ++) {
@@ -201,9 +200,11 @@ int main () {
         }
     }
 
+    // load sudoku problem
     ifstream file("/Users/smchase/Documents/Assignments/SUDOKU/problem.txt");
     char n;
     it = 0;
+    cout << "PROBLEM" << endl;
     while (file.get(n)) {
         cout << (n == 48 ? ' ' : n);
         if (n != '\n') {
@@ -212,11 +213,12 @@ int main () {
         }
     }
 
+    // cover numbers given by sudoku puzzle
     for (int i = 0; i < sudoku.size(); i ++) {
         for (int j = 0; j < sudoku[i].size(); j ++) {
             if (sudoku[i][j] != 0) {
                 for (int k = 0; k < matrix.size(); k ++) {
-                    if (matrix[k].num == sudoku[i][j] && matrix[k].pos[0] == i && matrix[k].pos[1] == j) {
+                    if (matrix[k].num == sudoku[i][j] && matrix[k].row == i && matrix[k].col == j) {
                         cover(*matrix[k].header);
                     }
                 }
@@ -224,5 +226,9 @@ int main () {
         }
     }
 
+    // solve sudoku recursively & display solutions
     solve();
+    if (solutions == 0) {
+        cout << "NO SOLUTIONS" << endl;
+    }
 }
