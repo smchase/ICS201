@@ -11,6 +11,7 @@ Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/e
 TODO
 cin sudoku problem
 clean code
+elegance
 */
 
 #include <iostream>
