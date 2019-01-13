@@ -10,6 +10,7 @@ Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/e
 
 TODO
 cin sudoku problem
+clean code
 */
 
 #include <iostream>
@@ -68,9 +69,18 @@ array<node, (10*9*9*4)+1> matrix;
 array<array<int, 9>, 9> sudoku;
 vector<solutionNum> solution;
 
-void solve () {
+void solve (int layer = 0) {
     if (matrix[0].right == &matrix[0]) {
-        cout << "SOLUTION!" << endl;
+        for (int i = 0; i < solution.size(); i ++) {
+            sudoku[solution[i].pos[0]][solution[i].pos[1]] = solution[i].num;
+        }
+        cout << endl;
+        for (int i = 0; i < sudoku.size(); i ++) {
+            for (int j = 0; j < sudoku[i].size(); j ++) {
+                cout << sudoku[i][j];
+            }
+            cout << endl;
+        }
         return;
     }
 
@@ -87,19 +97,19 @@ void solve () {
         }
     }
 
+    cover(*col);
     for (node *r = col->down; r != col; r = r->down) {
         for (node *c = r->right; c != r; c = c->right) {
             cover(*c->header);
         }
         solution.push_back({r->num, {r->pos[0], r->pos[1]}});
-        solve();
+        solve(layer+1);
         for (node *c = r->left; c != r; c = c->left) {
             uncover(*c->header);
         }
         solution.pop_back();
     }
-
-    cout << "dead end" << endl;
+    uncover(*col);
 }
 
 int main () {
@@ -126,7 +136,6 @@ int main () {
         matrix[it].pos = {i/81, (i/9)%9};
         it ++;
     }
-    cout << "created 2d matrix" << endl;
 
     matrix[0].left = &matrix[9*9*4];
     for (int i = 1; i < (9*9*4)+1; i ++) {
@@ -136,7 +145,6 @@ int main () {
         matrix[i-1].right = &matrix[i];
     }
     matrix[9*9*4].right = &matrix[0];
-    cout << "created list headers" << endl;
 
     node *leftNode;
     for (int i = 0; i < 9*9*9; i ++) {
@@ -191,7 +199,6 @@ int main () {
             }
         }
     }
-    cout << "filled list body pointers" << endl;
 
     ifstream file("/Users/smchase/Documents/Assignments/SUDOKU/problem.txt");
     char n;
@@ -203,7 +210,6 @@ int main () {
             it ++;
         }
     }
-    cout << "read problem" << endl;
 
     for (int i = 0; i < sudoku.size(); i ++) {
         for (int j = 0; j < sudoku[i].size(); j ++) {
@@ -216,10 +222,6 @@ int main () {
             }
         }
     }
-    cout << "covered given numbers" << endl;
 
-    cout << "solving..." << endl;
     solve();
-
-    cout << "finished!" << endl;
 }
