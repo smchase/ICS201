@@ -1,9 +1,12 @@
-020000000
-000600003
-074080000
-000003002
-080040010
-600500000
-000010780
-500009000
-000000040
+800000000
+003600000
+070090200
+050007000
+000045700
+000100030
+001000068
+008500010
+090000400
+
+this is supposed to be the hardest sudoku puzzle in the world according to Arto Inkala, a Finnish mathematician
+https://www.telegraph.co.uk/news/science/science-news/9359579/Worlds-hardest-sudoku-can-you-crack-it.html

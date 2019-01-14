@@ -18,7 +18,6 @@ Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/e
 
 TODO
 apply dancing links to ooga
-test program
 cin sudoku problem & fix path
 clean code
 elegance
@@ -88,8 +87,10 @@ void solve () {
         solutions ++;
         cout << endl << "SOLUTION " << solutions << endl;
         for (int i = 0; i < sudoku.size(); i ++) {
+            if (i == 3 || i == 6) cout << "------+-------+------" << endl;
             for (int j = 0; j < sudoku[i].size(); j ++) {
-                cout << sudoku[i][j];
+                if (j == 3 || j == 6) cout << "| ";
+                cout << sudoku[i][j] << " ";
             }
             cout << endl;
         }
@@ -133,7 +134,7 @@ int main () {
     int it = (9*9*4)+1;
     array<int, 4> arr;
     for (int i = 0; i < 9*9*9; i ++) {
-        arr = {i/9, (9*9)+(i%9)+((i/81)*9), (9*9*2)+(i%81), (9*9*3)+(i%9)+(((i%(9*9))/(9*3))*9)+((i/(9*9*3))*9*3)};
+        arr = {i/9, (9*9)+(i%9)+((i/81)*9), (9*9*2)+(i%81), (9*9*3)+(i%9)+(((i%(9*9))/(9*3))*9)+((i/(9*9*3))*9*3)}; // took forever
         for (int j = 0; j < 4; j ++) {
             matrix2d[i][arr[j]] = {true, &matrix[it]};
 
@@ -210,18 +211,23 @@ int main () {
         }
     }
 
-    // load sudoku problem
-    ifstream file("/Users/smchase/Documents/Assignments/SUDOKU/problem.txt");
+    // load and dislay sudoku problem
+    ifstream file("H:\\Documents\\Assignments\\SUDOKU\\problem.txt");
     char n;
     it = 0;
     cout << "PROBLEM" << endl;
-    while (file.get(n)) {
-        cout << (n == 48 ? ' ' : n);
+    while (file.get(n) && it < 81) {
         if (n != '\n') {
+            if (it == 3*9 || it == 6*9) cout << "------+-------+------" << endl;
+            if (it%9 == 3 || it%9 == 6) cout << "| ";
+            cout << (n == 48 ? ' ' : n) << " ";
             sudoku[it/9][it%9] = n-48;
             it ++;
+        } else {
+            cout << endl;
         }
     }
+    cout << endl;
 
     // cover numbers given by sudoku puzzle
     for (int i = 0; i < sudoku.size(); i ++) {
