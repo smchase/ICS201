@@ -1,14 +1,24 @@
 /*
 SUDOKU SOLVER USING DANCING LINKS
-Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and col 7), and the cols represent constraints (ex. there needs to be a 2 in row 5). This matrix is an example of an exact cover problem, where you must find a combination of rows that satisfies each col exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below.
+Essentially, the way this solver works is it translates a sudoku puzzle to a binary 2D matrix. The rows represent options (ex. a 9 at row 3 and col 7), and the cols represent constraints (ex. there needs to be a 2 in row 5). This matrix, once you remove the  rows representing the numbers given by the problem (and their columns) is an exact cover problem, meaning you have to find a combination of rows that satisfies each column exactly once. The most efficient way to do this is to turn our 2D matrix into a doubly linked list. We can solve this list using an algorithm called Dancing Links developed by Donald Knuth. A link to Knuth's paper can be found below, and I recommend reading it.
 
 Steps:
-1.
+1. Create a 2D binary matrix (with the patterns shown in the link below) with pointers to a linked matrix.
+2. Create headers for the linked matrix.
+3. Assign pointers to linked matrix using 2D matrix.
+4. Load & cover numbers given by sudoku problem.
+5. Recursively solve remaing exact matrix.
+a) check if no headers remain, if so, print solution,
+b) find S heuristic (column with the least rows), as it greatly speeds up the solving proccess,
+c) iterate through the rows in that column, and try covering them one by one and continuing with that row,
+d) after all possibilities with that row are explored, undo that row, and try the next,
 
 Dancing links paper: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
 Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
 
 TODO
+apply dancing links to ooga
+test program
 cin sudoku problem & fix path
 clean code
 elegance
