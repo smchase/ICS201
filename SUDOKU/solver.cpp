@@ -18,14 +18,10 @@ Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/e
 
 TODO
 apply dancing links to ooga
-cin sudoku problem & fix path
-clean code
-elegance
 generator
 */
 
 #include <iostream>
-#include <fstream>
 #include <array>
 
 using namespace std;
@@ -212,20 +208,17 @@ int main () {
     }
 
     // load and dislay sudoku problem
-    ifstream file("H:\\Documents\\Assignments\\SUDOKU\\problem.txt");
     char n;
     it = 0;
-    cout << "PROBLEM" << endl;
-    while (file.get(n) && it < 81) {
-        if (n != '\n') {
-            if (it == 3*9 || it == 6*9) cout << "------+-------+------" << endl;
-            if (it%9 == 3 || it%9 == 6) cout << "| ";
-            cout << (n == 48 ? ' ' : n) << " ";
-            sudoku[it/9][it%9] = n-48;
-            it ++;
-        } else {
-            cout << endl;
-        }
+    cout << "PROBLEM" << endl << "paste: ";
+    while (cin >> n && it < 80) {
+        if (n == 32) n = 48;
+        if (it == 3*9 || it == 6*9) cout << "------+-------+------" << endl;
+        if (it%9 == 3 || it%9 == 6) cout << "| ";
+        cout << (n == 48 ? ' ' : n) << " ";
+        sudoku[it/9][it%9] = n-48;
+        it ++;
+        if (it%9 == 0) cout << endl;
     }
     cout << endl;
 
