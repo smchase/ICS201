@@ -1,81 +1,182 @@
-// 41: 26s
-// 42: 13s
-
 #include <iostream>
-#include <fstream>
+#include <array>
 #include <vector>
 #include <string>
-#include <stdio.h>
-#include <algorithm>
 
 using namespace std;
 
-struct w {
-    string word;
-    int pos[2];
+struct node {
+    node *up;
+    node *down;
+    node *left;
+    node *right;
+    node *header;
 };
 
-void solve (vector<vector<w>> &w, int &n, int p, int l)
-{
-    if (p == l) n ++;
-    else
-        for (int i = 0; i < w[p].size(); i ++)
-            solve(w, n, w[p][i].pos[1], l);
+struct node2d {
+    bool filled = false;
+    node *pointer;
+};
+
+void cover (node &col) {
+    col.left->right = col.right;
+    col.right->left = col.left;
+
+    for (node *n1 = col.down; n1 != &col; n1 = n1->down) {
+        for (node *n2 = n1->right; n2 != n1; n2 = n2->right) {
+            n2->up->down = n2->down;
+            n2->down->up = n2->up;
+        }
+    }
 }
 
-int main ()
-{
-    // School: H:\\Documents\\Assignments
-    // Home: C:\\Users\\dumba\\OneDrive\\Documents\\GitHub\\Assignments
-    string location = "H:\\Documents\\Assignments";
+void uncover (node &col) {
+    col.left->right = &col;
+    col.right->left = &col;
 
-    // load tests
-    fstream file(location + "\\DATA41.txt");
-    string out;
+    for (node *n1 = col.up; n1 != &col; n1 = n1->up) {
+        for (node *n2 = n1->left; n2 != n1; n2 = n2->left) {
+            n2->up->down = n2;
+            n2->down->up = n2;
+        }
+    }
+}
+
+/*void solve () {
+    if (matrix[0].right == &matrix[0]) {
+        solutions ++;
+        return;
+    }
+
+    node *col;
+    int smallest = 10, size;
+    for (node *c = matrix[0].right; c != &matrix[0]; c = c->right) {
+        size = 0;
+        for (node *r = c->down; r != c; r = r->down) {
+            size ++;
+        }
+        if (size < smallest) {
+            smallest = size;
+            col = c;
+        }
+    }
+
+    cover(*col);
+    for (node *r = col->down; r != col; r = r->down) {
+        for (node *c = r->right; c != r; c = c->right) {
+            cover(*c->header);
+        }
+        sudoku[r->row][r->col] = r->num;
+        solve();
+        for (node *c = r->left; c != r; c = c->left) {
+            uncover(*c->header);
+        }
+    }
+    uncover(*col);
+}*/
+
+int main () {
+    string str;
     vector<string> tests;
-    while (file >> out) tests.push_back(out);
+    cout << "PASTE TESTS FROM FILE" << endl;
+    while (cin >> str && str != "END") tests.push_back(str);
 
-    // find all working words and add them to array
-    string arr[10] = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
-    vector<vector<vector<w>>> words;
-    vector<vector<w>> words1;
-    vector<w> words2;
+    vector<vector<vector<node2d>>> matrix2d;
+    vector<vector<node2d>> matrix;
+    vector<node2d> layer;
+    array<string, 10> arr = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
     for (int i = 0; i < tests.size(); i ++) {
-        printf("%s ", tests[i].c_str());
+        matrix2d.push_back({});
+        matrix.push_back({});
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
-                if (find(arr, arr+10, tests[i].substr(j, k)) != arr+10) words2.push_back({tests[i].substr(j, k), {j, j+k}});
+                for (int l = 0; l < arr.size(); l ++) {
+                    if (tests[i].substr(j, k) == arr[l]) {
+                        for (int m = 0; m < tests[i].size(); m ++) {
+                            if (m >= j && m < j+k) {
+                                matrix.push_back({});
+                                //layer.push_back({true, matrix.back});
+                            } else {
+                                layer.push_back({});
+                            }
+                        }
+
+                        matrix2d[i].push_back(layer);
+                        //layer.erase();
+                    }
+                }
             }
-            words1.push_back(words2);
-            words2.clear();
         }
-        words.push_back(words1);
-        words1.clear();
     }
-    printf("\n");
 
-    // use recursion to find all working sequences of words
-    int num = 0;
-    for (int i = 0; i < words.size(); i ++) {
-        num = 0;
-        solve(words[i], num, 0, tests[i].size());
-        printf("%i ", num);
+    vector<int> solutions;
+    /*matrix[0].left = &matrix[9*9*4];
+    for (int i = 1; i < (9*9*4)+1; i ++) {
+        matrix[i].up = &matrix[i];
+        matrix[i].down = &matrix[i];
+        matrix[i].left = &matrix[i-1];
+        matrix[i-1].right = &matrix[i];
     }
-    printf("\n");
+    matrix[9*9*4].right = &matrix[0];
+
+    // assign linked matrix pointers based off of 2d matrix
+    node *leftNode;
+    for (int i = 0; i < 9*9*9; i ++) {
+        for (int j = 0; j < 9*9*4; j ++) {
+            if (matrix2d[i][j].filled) {
+                // header
+                matrix2d[i][j].pointer->header = &matrix[j+1];
+
+                // up
+                for (int n = i; n >= 0; n --) {
+                    if (matrix2d[n][j].filled && n != i) {
+                        matrix2d[i][j].pointer->up = matrix2d[n][j].pointer;
+                        break;
+                    } else if (n == 0) {
+                        matrix2d[i][j].pointer->up = &matrix[j+1];
+                        matrix[j+1].down = matrix2d[i][j].pointer;
+                    }
+                }
+
+                // down
+                for (int n = i; n < 9*9*9; n ++) {
+                    if (matrix2d[n][j].filled && n != i) {
+                        matrix2d[i][j].pointer->down = matrix2d[n][j].pointer;
+                        break;
+                    } else if (n+1 == 9*9*9) {
+                        matrix2d[i][j].pointer->down = &matrix[j+1];
+                        matrix[j+1].up = matrix2d[i][j].pointer;
+                    }
+                }
+
+                // left
+                node *leftNode;
+                for (int n = j; n >= 0; n --) {
+                    if (matrix2d[i][n].filled && n != j) {
+                        matrix2d[i][j].pointer->left = matrix2d[i][n].pointer;
+                        break;
+                    } else if (n == 0) {
+                        leftNode = matrix2d[i][j].pointer;
+                    }
+                }
+
+                // right
+                for (int n = j; n < 9*9*4; n ++) {
+                    if (matrix2d[i][n].filled && n != j) {
+                        matrix2d[i][j].pointer->right = matrix2d[i][n].pointer;
+                        break;
+                    } else if (n+1 == 9*9*4) {
+                        matrix2d[i][j].pointer->right = leftNode;
+                        leftNode->left = matrix2d[i][j].pointer;
+                    }
+                }
+            }
+        }
+    }
+    */
+    
+    for (int i = 0; i < matrix.size(); i ++) {
+        //solve(matrix[i], solutions[i]);
+        cout << solutions[i] << " ";
+    }
 }
-
-/*
-1 ook
-2 ookook
-3 oog
-4 ooga
-5 ug
-6 mook
-7 mookmook
-8 oogam
-9 oogum
-10 ugug
-DATA41.txt (DATA42.txt for the second try) will contain 10 test cases. Each test case consists of a single line of text with N (1 ≤ N ≤ 50) Neanderthal number words. The words are not separated by spaces. You must parse each line and print out (on a single line) the number of possible sequences of Neanderthal numbers that can be represented by a Neanderthal person speaking the words aloud (for example the string “oogamookoogumook” could be “ooga mook oogum ook” meaning “4 6 9 1” or “oogam ook oogum ook” meaning “8 1 9 1”.  Note that the sample input below only contains 2 test cases, but the real data files will contain 10.
-Sample Input	 ookookook oogamookoogumook
-Sample Output	 3 2
-*/
