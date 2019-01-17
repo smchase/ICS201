@@ -82,27 +82,30 @@ int main () {
     while (cin >> str && str != "END") tests.push_back(str);
 
     vector<vector<vector<node2d>>> matrix2d;
-    vector<vector<node2d>> matrix;
+    vector<vector<node>> matrix;
     vector<node2d> layer;
     array<string, 10> arr = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
     for (int i = 0; i < tests.size(); i ++) {
         matrix2d.push_back({});
         matrix.push_back({});
+        cout << "NEW TEST" << endl;
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
                 for (int l = 0; l < arr.size(); l ++) {
                     if (tests[i].substr(j, k) == arr[l]) {
-                        for (int m = 0; m < tests[i].size(); m ++) {
+                        cout << "FOUND WORD ";
+                        for (int m = 0; m < tests[i].length(); m ++) {
+                            layer.push_back({});
                             if (m >= j && m < j+k) {
-                                matrix.push_back({});
-                                //layer.push_back({true, matrix.back});
-                            } else {
-                                layer.push_back({});
+                                matrix[i].push_back({});
+                                layer[layer.size()-1].filled = true;
+                                layer[layer.size()-1].pointer = &matrix[i][matrix.size()-1];
+                                cout << m << " ";
                             }
                         }
 
                         matrix2d[i].push_back(layer);
-                        //layer.erase();
+                        layer.clear();
                     }
                 }
             }
@@ -174,7 +177,7 @@ int main () {
         }
     }
     */
-    
+
     for (int i = 0; i < matrix.size(); i ++) {
         //solve(matrix[i], solutions[i]);
         cout << solutions[i] << " ";
