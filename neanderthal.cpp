@@ -85,6 +85,7 @@ int main () {
     vector<vector<node>> matrix;
     vector<node2d> layer;
     array<string, 10> arr = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
+    matrix.push_back({});
     for (int i = 0; i < tests.size(); i ++) {
         matrix2d.push_back({});
         matrix.push_back({});
