@@ -42,7 +42,7 @@ void uncover (node &col) {
     }
 }
 
-/*void solve () {
+void solve (vector<node> &matrix, int &solutions) {
     if (matrix[0].right == &matrix[0]) {
         solutions ++;
         return;
@@ -66,14 +66,13 @@ void uncover (node &col) {
         for (node *c = r->right; c != r; c = c->right) {
             cover(*c->header);
         }
-        sudoku[r->row][r->col] = r->num;
-        solve();
+        solve(matrix, solutions);
         for (node *c = r->left; c != r; c = c->left) {
             uncover(*c->header);
         }
     }
     uncover(*col);
-}*/
+}
 
 int main () {
     string str;
@@ -85,23 +84,33 @@ int main () {
     vector<vector<node>> matrix;
     vector<node2d> layer;
     array<string, 10> arr = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
-    matrix.push_back({});
+
+    for (int i = 0; i < matrix.size(); i ++) {
+        matrix[i].push_back({});
+        for (int j = 1; j < matrix2d[i][0].size()+1; j ++) {
+            matrix[i].push_back({});
+            matrix[i][j].up = &matrix[i][j];
+            matrix[i][j].down = &matrix[i][j];
+            matrix[i][j].left = &matrix[i][j-1];
+            matrix[i][j-1].right = &matrix[i][j];
+        }
+        matrix[i][0].left = &matrix[i].back();
+        matrix[i].back().right = &matrix[i][0];
+    }
+
     for (int i = 0; i < tests.size(); i ++) {
         matrix2d.push_back({});
         matrix.push_back({});
-        cout << "NEW TEST" << endl;
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
                 for (int l = 0; l < arr.size(); l ++) {
                     if (tests[i].substr(j, k) == arr[l]) {
-                        cout << "FOUND WORD ";
                         for (int m = 0; m < tests[i].length(); m ++) {
                             layer.push_back({});
                             if (m >= j && m < j+k) {
                                 matrix[i].push_back({});
-                                layer[layer.size()-1].filled = true;
-                                layer[layer.size()-1].pointer = &matrix[i][matrix.size()-1];
-                                cout << m << " ";
+                                layer.back().filled = true;
+                                layer.back().pointer = &matrix[i].back();
                             }
                         }
 
@@ -113,73 +122,60 @@ int main () {
         }
     }
 
-    vector<int> solutions;
-    /*matrix[0].left = &matrix[9*9*4];
-    for (int i = 1; i < (9*9*4)+1; i ++) {
-        matrix[i].up = &matrix[i];
-        matrix[i].down = &matrix[i];
-        matrix[i].left = &matrix[i-1];
-        matrix[i-1].right = &matrix[i];
-    }
-    matrix[9*9*4].right = &matrix[0];
-
-    // assign linked matrix pointers based off of 2d matrix
     node *leftNode;
-    for (int i = 0; i < 9*9*9; i ++) {
-        for (int j = 0; j < 9*9*4; j ++) {
-            if (matrix2d[i][j].filled) {
-                // header
-                matrix2d[i][j].pointer->header = &matrix[j+1];
+    for (int i = 0; i < matrix2d.size(); i ++) {
+        for (int j = 0; j < matrix2d[i].size(); j ++) {
+            for (int k = 0; k < matrix2d[i][j].size(); k ++) {
+                if (matrix2d[i][j][k].filled) {
+                    matrix2d[i][j][k].pointer->header = &matrix[i][matrix2d[i][0].size()+1+j];
 
-                // up
-                for (int n = i; n >= 0; n --) {
-                    if (matrix2d[n][j].filled && n != i) {
-                        matrix2d[i][j].pointer->up = matrix2d[n][j].pointer;
-                        break;
-                    } else if (n == 0) {
-                        matrix2d[i][j].pointer->up = &matrix[j+1];
-                        matrix[j+1].down = matrix2d[i][j].pointer;
+                    for (int n = j; n >= 0; n --) {
+                        if (matrix2d[i][n][k].filled && n != j) {
+                            matrix2d[i][j][k].pointer->up = matrix2d[i][n][k].pointer;
+                            break;
+                        } else if (n == 0) {
+                            matrix2d[i][j][k].pointer->up = matrix2d[i][j][k].pointer->header;
+                            matrix2d[i][j][k].pointer->header->down = matrix2d[i][j][k].pointer;
+                        }
                     }
-                }
 
-                // down
-                for (int n = i; n < 9*9*9; n ++) {
-                    if (matrix2d[n][j].filled && n != i) {
-                        matrix2d[i][j].pointer->down = matrix2d[n][j].pointer;
-                        break;
-                    } else if (n+1 == 9*9*9) {
-                        matrix2d[i][j].pointer->down = &matrix[j+1];
-                        matrix[j+1].up = matrix2d[i][j].pointer;
+                    for (int n = j; n < matrix2d[i].size(); n ++) {
+                        if (matrix2d[i][n][k].filled && n != j) {
+                            matrix2d[i][j][k].pointer->down = matrix2d[i][n][k].pointer;
+                            break;
+                        } else if (n+1 == matrix2d[i].size()) {
+                            matrix2d[i][j][k].pointer->down = matrix2d[i][j][k].pointer->header;
+                            matrix2d[i][j][k].pointer->header->up = matrix2d[i][j][k].pointer;
+                        }
                     }
-                }
 
-                // left
-                node *leftNode;
-                for (int n = j; n >= 0; n --) {
-                    if (matrix2d[i][n].filled && n != j) {
-                        matrix2d[i][j].pointer->left = matrix2d[i][n].pointer;
-                        break;
-                    } else if (n == 0) {
-                        leftNode = matrix2d[i][j].pointer;
+                    node *leftNode;
+                    for (int n = k; n >= 0; n --) {
+                        if (matrix2d[i][j][n].filled && n != k) {
+                            matrix2d[i][j][k].pointer->left = matrix2d[i][j][n].pointer;
+                            break;
+                        } else if (n == 0) {
+                            leftNode = matrix2d[i][j][k].pointer;
+                        }
                     }
-                }
 
-                // right
-                for (int n = j; n < 9*9*4; n ++) {
-                    if (matrix2d[i][n].filled && n != j) {
-                        matrix2d[i][j].pointer->right = matrix2d[i][n].pointer;
-                        break;
-                    } else if (n+1 == 9*9*4) {
-                        matrix2d[i][j].pointer->right = leftNode;
-                        leftNode->left = matrix2d[i][j].pointer;
+                    for (int n = j; n < 9*9*4; n ++) {
+                        if (matrix2d[i][n].filled && n != j) {
+                            matrix2d[i][j].pointer->right = matrix2d[i][n].pointer;
+                            break;
+                        } else if (n+1 == 9*9*4) {
+                            matrix2d[i][j].pointer->right = leftNode;
+                            leftNode->left = matrix2d[i][j].pointer;
+                        }
                     }
                 }
             }
         }
     }
-    */
 
+    vector<int> solutions;
     for (int i = 0; i < matrix.size(); i ++) {
+        solutions.push_back(0);
         //solve(matrix[i], solutions[i]);
         cout << solutions[i] << " ";
     }

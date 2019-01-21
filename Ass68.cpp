@@ -106,7 +106,6 @@ Bard
 Bowman
 Adams
 Adrian
-
 Create a menu based program, which will perform and display the following to the screen:
 �	Display all the names
 �	Display names which begin with the letter A
