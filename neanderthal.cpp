@@ -84,35 +84,31 @@ int main () {
     vector<vector<node>> matrix;
     vector<node2d> layer;
     array<string, 10> arr = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
-
-    for (int i = 0; i < matrix.size(); i ++) {
-        matrix[i].push_back({});
-        for (int j = 1; j < matrix2d[i][0].size()+1; j ++) {
-            matrix[i].push_back({});
-            matrix[i][j].up = &matrix[i][j];
-            matrix[i][j].down = &matrix[i][j];
-            matrix[i][j].left = &matrix[i][j-1];
-            matrix[i][j-1].right = &matrix[i][j];
-        }
-        matrix[i][0].left = &matrix[i].back();
-        matrix[i].back().right = &matrix[i][0];
-    }
-
+int row;
     for (int i = 0; i < tests.size(); i ++) {
         matrix2d.push_back({});
         matrix.push_back({});
+        matrix[i].push_back({});
+        for (int j = 0; j < tests[i].length(); j ++) {
+            matrix[i].push_back({});
+        }
+        cout << endl;
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
                 for (int l = 0; l < arr.size(); l ++) {
                     if (tests[i].substr(j, k) == arr[l]) {
+                        row = 0;
                         for (int m = 0; m < tests[i].length(); m ++) {
                             layer.push_back({});
                             if (m >= j && m < j+k) {
+                                row ++;
+                                cout << 1;
                                 matrix[i].push_back({});
                                 layer.back().filled = true;
                                 layer.back().pointer = &matrix[i].back();
                             }
                         }
+                        cout << row << endl;
 
                         matrix2d[i].push_back(layer);
                         layer.clear();
@@ -122,12 +118,24 @@ int main () {
         }
     }
 
+    for (int i = 0; i < matrix.size(); i ++) {
+        matrix[i][0].left = &matrix[i][tests[i].length()];
+        for (int j = 1; j < tests[i].length()+1; j ++) {
+            matrix[i][j].up = &matrix[i][j];
+            matrix[i][j].down = &matrix[i][j];
+            matrix[i][j].left = &matrix[i][j-1];
+            matrix[i][j-1].right = &matrix[i][j];
+        }
+        matrix[i][tests[i].length()].right = &matrix[i][0];
+    }
+
     node *leftNode;
     for (int i = 0; i < matrix2d.size(); i ++) {
         for (int j = 0; j < matrix2d[i].size(); j ++) {
+            cout << endl;
             for (int k = 0; k < matrix2d[i][j].size(); k ++) {
                 if (matrix2d[i][j][k].filled) {
-                    matrix2d[i][j][k].pointer->header = &matrix[i][matrix2d[i][0].size()+1+j];
+                    matrix2d[i][j][k].pointer->header = &matrix[i][tests[i].length()+1+j];
 
                     for (int n = j; n >= 0; n --) {
                         if (matrix2d[i][n][k].filled && n != j) {
@@ -159,24 +167,26 @@ int main () {
                         }
                     }
 
-                    for (int n = j; n < 9*9*4; n ++) {
-                        if (matrix2d[i][n].filled && n != j) {
-                            matrix2d[i][j].pointer->right = matrix2d[i][n].pointer;
+                    for (int n = k; n < matrix2d[i][j].size(); n ++) {
+                        if (matrix2d[i][j][n].filled && n != k) {
+                            matrix2d[i][j][k].pointer->right = matrix2d[i][j][n].pointer;
                             break;
-                        } else if (n+1 == 9*9*4) {
-                            matrix2d[i][j].pointer->right = leftNode;
-                            leftNode->left = matrix2d[i][j].pointer;
+                        } else if (n+1 == matrix2d[i][j].size()) {
+                            matrix2d[i][j][k].pointer->right = leftNode;
+                            leftNode->left = matrix2d[i][j][k].pointer;
                         }
                     }
+                    cout << i;
                 }
             }
         }
     }
 
-    vector<int> solutions;
+    cout << "here";
+    /*vector<int> solutions;
     for (int i = 0; i < matrix.size(); i ++) {
         solutions.push_back(0);
-        //solve(matrix[i], solutions[i]);
+        solve(matrix[i], solutions[i]);
         cout << solutions[i] << " ";
-    }
+    }*/
 }
