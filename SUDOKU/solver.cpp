@@ -15,10 +15,6 @@ d) after all possibilities with that row are explored, undo that row, and try th
 
 Dancing links paper: https://www.ocf.berkeley.edu/~jchu/publicportal/sudoku/0011047.pdf
 Sudoku exact cover binary matrix: https://www.stolaf.edu/people/hansonr/sudoku/exactcovermatrix.htm
-
-TODO
-apply dancing links to ooga
-generator
 */
 
 #include <iostream>
@@ -132,7 +128,8 @@ int main () {
     for (int i = 0; i < 9*9*9; i ++) {
         arr = {i/9, (9*9)+(i%9)+((i/81)*9), (9*9*2)+(i%81), (9*9*3)+(i%9)+(((i%(9*9))/(9*3))*9)+((i/(9*9*3))*9*3)}; // took forever
         for (int j = 0; j < 4; j ++) {
-            matrix2d[i][arr[j]] = {true, &matrix[it]};
+            matrix2d[i][arr[j]].filled = true;
+            matrix2d[i][arr[j]].pointer = &matrix[it];
 
             // assign info to linked matrix nodes
             matrix[it].num = (i%9)+1;

@@ -11,6 +11,7 @@ struct node {
     node *left;
     node *right;
     node *header;
+    int n = -1;
 };
 
 struct node2d {
@@ -84,7 +85,7 @@ int main () {
     vector<vector<node>> matrix;
     vector<node2d> layer;
     array<string, 10> arr = {"ook", "ookook", "oog", "ooga", "ug", "mook", "mookmook", "oogam", "oogum", "ugug"};
-int row;
+
     for (int i = 0; i < tests.size(); i ++) {
         matrix2d.push_back({});
         matrix.push_back({});
@@ -92,23 +93,18 @@ int row;
         for (int j = 0; j < tests[i].length(); j ++) {
             matrix[i].push_back({});
         }
-        cout << endl;
         for (int j = 0; j < tests[i].length(); j ++) {
             for (int k = 2; k <= (tests[i].length()-j < 8 ? tests[i].length()-j : 8); k ++) {
                 for (int l = 0; l < arr.size(); l ++) {
                     if (tests[i].substr(j, k) == arr[l]) {
-                        row = 0;
                         for (int m = 0; m < tests[i].length(); m ++) {
                             layer.push_back({});
                             if (m >= j && m < j+k) {
-                                row ++;
-                                cout << 1;
                                 matrix[i].push_back({});
                                 layer.back().filled = true;
-                                layer.back().pointer = &matrix[i].back();
+                                layer.back().pointer = &matrix[0][0];
                             }
                         }
-                        cout << row << endl;
 
                         matrix2d[i].push_back(layer);
                         layer.clear();
@@ -117,6 +113,7 @@ int row;
             }
         }
     }
+    matrix[0][0].n = 5;
 
     for (int i = 0; i < matrix.size(); i ++) {
         matrix[i][0].left = &matrix[i][tests[i].length()];
@@ -135,9 +132,10 @@ int row;
             cout << endl;
             for (int k = 0; k < matrix2d[i][j].size(); k ++) {
                 if (matrix2d[i][j][k].filled) {
-                    matrix2d[i][j][k].pointer->header = &matrix[i][tests[i].length()+1+j];
+                    //matrix2d[i][j][k].pointer->header = &matrix[i][tests[i].length()+1+j];
+                    cout << matrix2d[i][j][k].pointer->n;
 
-                    for (int n = j; n >= 0; n --) {
+                    /*for (int n = j; n >= 0; n --) {
                         if (matrix2d[i][n][k].filled && n != j) {
                             matrix2d[i][j][k].pointer->up = matrix2d[i][n][k].pointer;
                             break;
@@ -175,14 +173,13 @@ int row;
                             matrix2d[i][j][k].pointer->right = leftNode;
                             leftNode->left = matrix2d[i][j][k].pointer;
                         }
-                    }
-                    cout << i;
+                    }*/
+                    //cout << i;
                 }
             }
         }
     }
 
-    cout << "here";
     /*vector<int> solutions;
     for (int i = 0; i < matrix.size(); i ++) {
         solutions.push_back(0);
